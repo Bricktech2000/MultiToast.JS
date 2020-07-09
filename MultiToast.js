@@ -40,6 +40,8 @@ multiToast = {
         }
         return 0;
       }.bind(this);
+      this.inputCount = 0;
+      this.inputs = [];
     }
     //https://stackoverflow.com/questions/6396046/unlimited-arguments-in-a-javascript-function
     setColor(type, ...params){
@@ -73,12 +75,27 @@ multiToast = {
           button.onclick = params[1] !== undefined ? params[1].bind(this) : null;
           this.toastElement.appendChild(button);
           return this;
+        case 'submit':
+          this.core.checkParamCount('addItem(' + type + ')', params, 1, 2);
+          var submit = document.createElement('button');
+          //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_objects/Function/bind
+          submit.innerHTML = this.core.getValue(params[0]);
+          submit.onclick = params[1] !== undefined ? params[1].bind(this) : null;
+          this.toastElement.addEventListener('keydown', function(e){
+            if(e.keyCode == 13) submit.click();
+          })
+          this.toastElement.appendChild(submit);
+          return this;
         case 'input':
           this.core.checkParamCount('addItem(' + type + ')', params, 0, 1);
+          this.inputs.push(undefined);
           var input = document.createElement('input');
           input.type = 'text';
           input.placeholder = params[0] !== undefined ? this.core.getValue(params[0]) : '';
+          var inputCount = this.inputCount;
+          input.onkeyup = function(){this.inputs[inputCount] = input.value;}.bind(this);
           this.toastElement.appendChild(input);
+          this.inputCount++;
           return this;
       }
       this.core.warn('addItem received an invalid type: ' + type);
@@ -123,7 +140,7 @@ multiToast.infoToast = function(message){
     .setColor('accent', '#aaa')
     .setColor('text', '#000')
     .addItem('text', message)
-    .addItem('button', 'Ok', function(){ this.return(multiToast.ok) })
+    .addItem('submit', 'Ok', function(){ this.return(multiToast.ok) })
 }
 multiToast.promptToast = function(message){
   return new multiToast.Toast()
@@ -132,7 +149,7 @@ multiToast.promptToast = function(message){
     .setColor('text', '#000')
     .addItem('text', message)
     .addItem('input')
-    .addItem('button', 'Ok', function(){ this.return(this.inputs[0]) })
+    .addItem('submit', 'Ok', function(){ this.return(this.inputs[0]) })
     .addItem('button', 'Cancel', function(){ this.return(multiToast.cancel) })
 }
 
