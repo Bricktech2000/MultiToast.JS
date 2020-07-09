@@ -5,6 +5,7 @@ multiToast = {
   Toast: class {
     constructor(){
       this.toastElement = document.createElement('div');
+      this.modal = false;
       this.core = {};
       /*this.core.createResolveParameter = function(){
         return {
@@ -42,17 +43,17 @@ multiToast = {
       switch(type){
         case 'background':
           this.toastElement.backgroundColor = params[0];
-          break;
+          return this;
         case 'accent':
           this.toastElement.borderLeftColor = params[0];
-          break;
+          return this;
         case 'text':
           this.toastElement.color = params[0];
-          break;
+          return this;
         default:
           console.warn('MultiToast Warning: setColor received an unexpected color type: ' + type + '.');
       }
-      return this;
+      this.core.warn('setParam received an invalid type: ' + type);
     }
     addItem(type, ...params){
       switch(type){
@@ -61,7 +62,7 @@ multiToast = {
           var p = document.createElement('p');
           p.innerHTML = this.core.getValue(params[0]);
           this.toastElement.appendChild(p);
-          break;
+          return this;
         case 'button':
           this.core.checkParamCount('addItem(' + type + ')', params, 1, 2);
           var button = document.createElement('button');
@@ -69,16 +70,25 @@ multiToast = {
           button.innerHTML = this.core.getValue(params[0]);
           button.onclick = params[1] !== undefined ? params[1].bind(this) : null;
           this.toastElement.appendChild(button);
-          break;
+          return this;
         case 'input':
           this.core.checkParamCount('addItem(' + type + ')', params, 0, 1);
           var input = document.createElement('input');
           input.type = 'text';
           input.placeholder = params[0] !== undefined ? this.core.getValue(params[0]) : '';
           this.toastElement.appendChild(input);
-          break;
+          return this;
       }
-      return this;
+      this.core.warn('setParam received an invalid type: ' + type);
+    }
+    setParam(type, ...params){
+      switch(type){
+        case 'modal':
+          this.core.checkParamCount('setParam(' + type + ')', params, 1, 1);
+          this.modal = this.core.getValue(params[0]);
+          return this;
+      }
+      this.core.warn('setParam received an invalid type: ' + type);
     }
     show(timeout){
       /*return new Promise(resolve, reject){
@@ -115,6 +125,7 @@ multiToast.register('prompt', function(message){
     .addItem('input')
     .addItem('button', 'Ok', function(){ this.return(this.inputs[0]) })
     .addItem('button', 'Cancel', function(){ this.return(null) })
+    .setParam('modal', true)
     .show(() => {return multiToast.timeout});
 });
 
