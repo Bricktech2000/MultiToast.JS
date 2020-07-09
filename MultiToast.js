@@ -2,6 +2,7 @@ multiToast = {
   register: function(name, func){
     this[name] = func;
   },
+  modal: -1,
   Toast: class {
     constructor(){
       this.toastElement = document.createElement('div');
@@ -53,7 +54,7 @@ multiToast = {
         default:
           console.warn('MultiToast Warning: setColor received an unexpected color type: ' + type + '.');
       }
-      this.core.warn('setParam received an invalid type: ' + type);
+      this.core.warn('setColor received an invalid type: ' + type);
     }
     addItem(type, ...params){
       switch(type){
@@ -79,9 +80,9 @@ multiToast = {
           this.toastElement.appendChild(input);
           return this;
       }
-      this.core.warn('setParam received an invalid type: ' + type);
+      this.core.warn('addItem received an invalid type: ' + type);
     }
-    setParam(type, ...params){
+    /*setParam(type, ...params){
       switch(type){
         case 'modal':
           this.core.checkParamCount('setParam(' + type + ')', params, 1, 1);
@@ -89,18 +90,25 @@ multiToast = {
           return this;
       }
       this.core.warn('setParam received an invalid type: ' + type);
-    }
+    }*/
     show(timeout){
       /*return new Promise(resolve, reject){
         resolve()
       }*/
+      var modal = document.createElement('p')
+      modal.innerHTML = '[[MODAL]]';
+      if(timeout == multiToast.modal) this.toastElement.appendChild(modal);
       document.body.appendChild(this.toastElement);
       return new Promise((resolve, reject) => {
+        var end = function(type, res){
+          document.body.removeChild(this.toastElement);
+          resolve({ type: type, value: res });
+        }.bind(this);
         this.return = function(res){
-          resolve({ type: 'return', value: res });
+          end('return', res);
         }
-        if(timeout !== undefined)
-          setTimeout(resolve, this.core.getValue(timeout), {type: 'timeout', value: undefined });
+        if(timeout !== undefined && timeout != multiToast.modal)
+          setTimeout(end, this.core.getValue(timeout), 'timeout', undefined);
       });
     }
   }
@@ -125,8 +133,7 @@ multiToast.register('prompt', function(message){
     .addItem('input')
     .addItem('button', 'Ok', function(){ this.return(this.inputs[0]) })
     .addItem('button', 'Cancel', function(){ this.return(null) })
-    .setParam('modal', true)
-    .show(() => {return multiToast.timeout});
+    .show(multiToast.modal);
 });
 
 /*
