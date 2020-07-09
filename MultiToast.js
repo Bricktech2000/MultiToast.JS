@@ -3,9 +3,13 @@ multiToast = {
     this[name] = func;
   },
   modal: -1,
+  ok: 1,
+  cancel: -1,
   Toast: class {
     constructor(){
       this.toastElement = document.createElement('div');
+      var hr = document.createElement('hr');
+      this.toastElement.appendChild(hr);
       this.core = {};
       /*this.core.createResolveParameter = function(){
         return {
@@ -119,7 +123,7 @@ multiToast.infoToast = function(message){
     .setColor('accent', '#aaa')
     .setColor('text', '#000')
     .addItem('text', message)
-    .addItem('button', 'Ok', function(){ this.return(null) })
+    .addItem('button', 'Ok', function(){ this.return(multiToast.ok) })
 }
 multiToast.promptToast = function(message){
   return new multiToast.Toast()
@@ -129,7 +133,7 @@ multiToast.promptToast = function(message){
     .addItem('text', message)
     .addItem('input')
     .addItem('button', 'Ok', function(){ this.return(this.inputs[0]) })
-    .addItem('button', 'Cancel', function(){ this.return(null) })
+    .addItem('button', 'Cancel', function(){ this.return(multiToast.cancel) })
 }
 
 multiToast.timeout = 5000;
@@ -139,19 +143,31 @@ multiToast.register('info', function(message){
 multiToast.register('modalInfo', function(message){
   return multiToast.infoToast(message).show(multiToast.modal);
 });
+multiToast.register('confirm', function(message){
+  return multiToast.infoToast(message)
+    .addItem('button', 'Cancel', function(){ this.return(multiToast.cancel) })
+    .show(() => {return multiToast.timeout});
+});
+multiToast.register('modalConfirm', function(message){
+  return multiToast.infoToast(message)
+  .addItem('button', 'Cancel', function(){ this.return(multiToast.cancel) })
+  .show(multiToast.modal);
+});
 multiToast.register('prompt', function(message){
   return multiToast.promptToast(message).show(() => {return multiToast.timeout});
 });
 multiToast.register('modalPrompt', function(message){
   return multiToast.promptToast(message).show(multiToast.modal);
 });
-function showExampleToast(type){
-  var ret = multiToast[type](type);
+async function showExampleToast(type){
+  var ret = await multiToast[type](type);
   console.log(ret);
 }
 window.onload = function(){
   showExampleToast('info');
   showExampleToast('modalInfo');
+  showExampleToast('confirm');
+  showExampleToast('modalConfirm');
   showExampleToast('prompt');
   showExampleToast('modalPrompt');
 }
