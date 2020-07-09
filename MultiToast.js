@@ -6,7 +6,6 @@ multiToast = {
   Toast: class {
     constructor(){
       this.toastElement = document.createElement('div');
-      this.modal = false;
       this.core = {};
       /*this.core.createResolveParameter = function(){
         return {
@@ -51,8 +50,6 @@ multiToast = {
         case 'text':
           this.toastElement.color = params[0];
           return this;
-        default:
-          console.warn('MultiToast Warning: setColor received an unexpected color type: ' + type + '.');
       }
       this.core.warn('setColor received an invalid type: ' + type);
     }
@@ -95,36 +92,36 @@ multiToast = {
       /*return new Promise(resolve, reject){
         resolve()
       }*/
-      var modal = document.createElement('p')
+      var modal = document.createElement('p');
       modal.innerHTML = '[[MODAL]]';
       if(timeout == multiToast.modal) this.toastElement.appendChild(modal);
       document.body.appendChild(this.toastElement);
+
       return new Promise((resolve, reject) => {
         var end = function(type, res){
           document.body.removeChild(this.toastElement);
           resolve({ type: type, value: res });
         }.bind(this);
+        if(timeout !== undefined && timeout != multiToast.modal)
+          var to = setTimeout(end, this.core.getValue(timeout), 'timeout', undefined);
         this.return = function(res){
           end('return', res);
+          if(to) clearTimeout(to);
         }
-        if(timeout !== undefined && timeout != multiToast.modal)
-          setTimeout(end, this.core.getValue(timeout), 'timeout', undefined);
       });
     }
   }
 }
 
-multiToast.timeout = 5000;
-multiToast.register('info', function(message){
+multiToast.infoToast = function(message){
   return new multiToast.Toast()
     .setColor('background', '#ccc')
     .setColor('accent', '#aaa')
     .setColor('text', '#000')
     .addItem('text', message)
     .addItem('button', 'Ok', function(){ this.return(null) })
-    .show(() => {return multiToast.timeout});
-});
-multiToast.register('prompt', function(message){
+}
+multiToast.promptToast = function(message){
   return new multiToast.Toast()
     .setColor('background', '#ccc')
     .setColor('accent', '#aaa')
@@ -133,9 +130,31 @@ multiToast.register('prompt', function(message){
     .addItem('input')
     .addItem('button', 'Ok', function(){ this.return(this.inputs[0]) })
     .addItem('button', 'Cancel', function(){ this.return(null) })
-    .show(multiToast.modal);
-});
+}
 
+multiToast.timeout = 5000;
+multiToast.register('info', function(message){
+  return multiToast.infoToast(message).show(() => {return multiToast.timeout});
+});
+multiToast.register('modalInfo', function(message){
+  return multiToast.infoToast(message).show(multiToast.modal);
+});
+multiToast.register('prompt', function(message){
+  return multiToast.promptToast(message).show(() => {return multiToast.timeout});
+});
+multiToast.register('modalPrompt', function(message){
+  return multiToast.promptToast(message).show(multiToast.modal);
+});
+function showExampleToast(type){
+  var ret = multiToast[type](type);
+  console.log(ret);
+}
+window.onload = function(){
+  showExampleToast('info');
+  showExampleToast('modalInfo');
+  showExampleToast('prompt');
+  showExampleToast('modalPrompt');
+}
 /*
 ret = await multiToast.info('Info');
 ret = await multiToast.prompt('Prompt');
