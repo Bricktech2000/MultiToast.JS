@@ -11,9 +11,34 @@ multiToast = {
           buttons: [], inputs: []
         };
       }*/
+      this.core.getValue = function(val){
+        //https://stackoverflow.com/questions/798340/testing-if-value-is-a-function
+        if(typeof val === 'function') return val();
+        return val;
+      }
+      this.core.warn = function(message){
+        console.warn('MultiToast Warning: ' + message);
+      }
+      this.core.err = function(message){
+        throw 'MultiToast Error: ' + message;
+      }
+      this.core.checkParamCount = function(func, params, min, max){
+        if(min == max) var count = min;
+        else var count = min + ' to ' + max;
+        if(params.length > max){
+          this.core.warn(func + ' received ' + params.length + ' parameters, but only ' + count + ' expected.');
+          return 1;
+        }
+        if(params.length < min){
+          this.core.err(func + ' received ' + params.length + ' parameters, but minimum ' + count + ' expected.');
+          return 1;
+        }
+        return 0;
+      }.bind(this);
     }
     //https://stackoverflow.com/questions/6396046/unlimited-arguments-in-a-javascript-function
     setColor(type, ...params){
+      this.core.checkParamCount('setColor', params, 1, 1);
       switch(type){
         case 'background':
           this.toastElement.backgroundColor = params[0];
@@ -25,28 +50,31 @@ multiToast = {
           this.toastElement.color = params[0];
           break;
         default:
-          console.warn('Warning: multiToast received an unexpected color type: ' + type);
+          console.warn('MultiToast Warning: setColor received an unexpected color type: ' + type + '.');
       }
       return this;
     }
     addItem(type, ...params){
       switch(type){
         case 'text':
+          this.core.checkParamCount('addItem(' + type + ')', params, 1, 1);
           var p = document.createElement('p');
-          p.innerHTML = params[0];
+          p.innerHTML = this.core.getValue(params[0]);
           this.toastElement.appendChild(p);
           break;
         case 'button':
+          this.core.checkParamCount('addItem(' + type + ')', params, 1, 2);
           var button = document.createElement('button');
           //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_objects/Function/bind
-          button.innerHTML = params[0];
-          button.onclick = params[1].bind(this);
+          button.innerHTML = this.core.getValue(params[0]);
+          button.onclick = params[1] !== undefined ? params[1].bind(this) : null;
           this.toastElement.appendChild(button);
           break;
         case 'input':
+          this.core.checkParamCount('addItem(' + type + ')', params, 0, 1);
           var input = document.createElement('input');
           input.type = 'text';
-          input.placeHolder = params[0] !== undefined ? params[0] : '';
+          input.placeholder = params[0] !== undefined ? this.core.getValue(params[0]) : '';
           this.toastElement.appendChild(input);
           break;
       }
@@ -62,7 +90,7 @@ multiToast = {
           resolve({ type: 'return', value: res });
         }
         if(timeout !== undefined)
-          setTimeout(resolve, timeout, {type: 'timeout', value: undefined });
+          setTimeout(resolve, this.core.getValue(timeout), {type: 'timeout', value: undefined });
       });
     }
   }
@@ -76,7 +104,7 @@ multiToast.register('info', function(message){
     .setColor('text', '#000')
     .addItem('text', message)
     .addItem('button', 'Ok', function(){ this.return(null) })
-    .show(multiToast.timeout);
+    .show(() => {return multiToast.timeout});
 });
 multiToast.register('prompt', function(message){
   return new multiToast.Toast()
@@ -87,7 +115,7 @@ multiToast.register('prompt', function(message){
     .addItem('input')
     .addItem('button', 'Ok', function(){ this.return(this.inputs[0]) })
     .addItem('button', 'Cancel', function(){ this.return(null) })
-    .show(multiToast.timeout);
+    .show(() => {return multiToast.timeout});
 });
 
 /*
