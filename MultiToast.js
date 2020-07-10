@@ -43,11 +43,11 @@ multiToast = {
       }.bind(this);
       this.core.showModalBackground = function(){
         multiToast.toastContainer.style.backgroundColor = 'rgba(0, 0, 0, .25)';
-        multiToast.toastContainer.style.pointerEvents = 'none';
+        multiToast.toastContainer.style.pointerEvents = 'all';
       }
       this.core.hideModalBackground = function(){
         multiToast.toastContainer.style.backgroundColor = 'rgba(0, 0, 0, 0)';
-        multiToast.toastContainer.style.pointerEvents = 'all';
+        multiToast.toastContainer.style.pointerEvents = 'none';
       }
       this.inputCount = 0;
       this.inputs = [];
