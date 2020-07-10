@@ -117,12 +117,17 @@ multiToast = {
       }*/
       var modal = document.createElement('p');
       modal.innerHTML = '[[MODAL]]';
-      if(timeout == multiToast.modal) this.toastElement.appendChild(modal);
-      document.body.appendChild(this.toastElement);
+      if(timeout == multiToast.modal){
+        this.toastElement.appendChild(modal);
+        multiToast.toastContainer.style.backgroundColor = 'rgba(0, 0, 0, .25)';
+      }else{
+        multiToast.toastContainer.style.pointerEvents = 'none';
+      }
+      multiToast.toastContainer.appendChild(this.toastElement);
 
       return new Promise((resolve, reject) => {
         var end = function(type, res){
-          document.body.removeChild(this.toastElement);
+          multiToast.toastContainer.removeChild(this.toastElement);
           resolve({ type: type, value: res });
         }.bind(this);
         if(timeout !== undefined && timeout != multiToast.modal)
@@ -233,6 +238,14 @@ async function showExampleToast(type){
 var vh = window.innerHeight * 0.01;
 document.documentElement.style.setProperty('--vh', vh + 'px');
 
+window.addEventListener('load', function(){
+  var container = document.createElement('div');
+  container.classList.add('multiToastContainer');
+  document.body.appendChild(container);
+
+  multiToast.toastContainer = container;
+})
+
 window.onload = function(){
   /*showExampleToast('log');
   showExampleToast('info');
@@ -242,9 +255,9 @@ window.onload = function(){
   showExampleToast('warn');
   showExampleToast('error');
   showExampleToast('success');
-  showExampleToast('prompt');*/
-  //showExampleToast('modalPrompt');
-  //showExampleToast('passPrompt');
+  showExampleToast('prompt');
+  showExampleToast('modalPrompt');
+  showExampleToast('passPrompt');*/
   showExampleToast('modalPassPrompt');
 }
 /*

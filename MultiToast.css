@@ -6,6 +6,13 @@
   max-height: 999999999999px;
 }
 
+.multiToastContainer{
+  width: 100%;
+  height: 100%;
+  position: absolute; top: 0; left: 0;
+  z-index: 1000000000000;
+}
+
 .multiToast{
   position: absolute; bottom: 0; left: 0;
   width: calc(var(--vh, 1vh) * 50);
