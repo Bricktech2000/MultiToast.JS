@@ -5,6 +5,10 @@ multiToast = {
   modal: -1,
   ok: 1,
   cancel: -1,
+  core: {
+    toastStack: [],
+    modalToastQueue: []
+  },
   Toast: class {
     constructor(){
       this.toastElement = document.createElement('div');
@@ -127,10 +131,21 @@ multiToast = {
       //modal.innerHTML = '[[MODAL]]';
       if(timeout == multiToast.modal)
         //this.toastElement.appendChild(modal);
-        this.core.showModalBackground();
-      multiToast.toastContainer.appendChild(this.toastElement);
+        this.modal = true;
+      if(this.modal){
+        //this.core.showModalBackground();
+        multiToast.toastContainer.appendChild(this.toastElement);
+        multiToast.core.modalToastQueue.push(this);
+        if(multiToast.core.modalToastQueue.length == 1){
+          this.toastElement.classList.add('visible');
+          this.core.showModalBackground();
+        }
+      }else{
+        multiToast.core.toastStack.push(this);
+      }
+      //multiToast.toastContainer.appendChild(this.toastElement);
       setTimeout(function(){
-        this.toastElement.classList.add('visible');
+        //this.toastElement.classList.add('visible');
       }.bind(this), 100);
 
       return new Promise((resolve, reject) => {
@@ -140,6 +155,13 @@ multiToast = {
             multiToast.toastContainer.removeChild(this.toastElement);
           }.bind(this), 500);
           this.core.hideModalBackground();
+          multiToast.core.modalToastQueue.shift(); //pop_front()
+          if(multiToast.core.modalToastQueue.length > 0){
+            var that = multiToast.core.modalToastQueue[0];
+            that.toastElement.classList.add('visible');
+            that.core.showModalBackground();
+          }
+
           resolve({ type: type, value: res });
         }.bind(this);
         if(timeout !== undefined && timeout != multiToast.modal)
@@ -270,7 +292,9 @@ window.onload = function(){
   showExampleToast('prompt');
   showExampleToast('modalPrompt');*/
   //showExampleToast('passPrompt');
-  setTimeout(function(){showExampleToast('modalPassPrompt');}, 1000);
+  //setTimeout(function(){showExampleToast('modalPassPrompt');}, 1000);
+  showExampleToast('modalConfirm');
+  showExampleToast('modalPassPrompt')
 }
 /*
 ret = await multiToast.info('Info');
