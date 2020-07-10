@@ -11,6 +11,8 @@
   height: 100%;
   position: absolute; top: 0; left: 0;
   z-index: 1000000000000;
+  transition: background-color .33s ease-out;
+  pointer-events: none;
 }
 
 .multiToast{
@@ -26,6 +28,11 @@
   font-size: calc(var(--vh, 1vh) * 2.5);
   direction: rtl;
   pointer-events: all;
+  -webkit-transform: translateX(-125%);
+  transition: -webkit-transform .33s ease-out;
+}
+.multiToast.visible{
+  -webkit-transform: translateX(0%);
 }
 .multiToast *{
   direction: ltr;

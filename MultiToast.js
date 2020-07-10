@@ -129,10 +129,16 @@ multiToast = {
         //this.toastElement.appendChild(modal);
         this.core.showModalBackground();
       multiToast.toastContainer.appendChild(this.toastElement);
+      setTimeout(function(){
+        this.toastElement.classList.add('visible');
+      }.bind(this), 100);
 
       return new Promise((resolve, reject) => {
         var end = function(type, res){
-          multiToast.toastContainer.removeChild(this.toastElement);
+          this.toastElement.classList.remove('visible');
+          setTimeout(function(){
+            multiToast.toastContainer.removeChild(this.toastElement);
+          }.bind(this), 500);
           this.core.hideModalBackground();
           resolve({ type: type, value: res });
         }.bind(this);
@@ -264,7 +270,7 @@ window.onload = function(){
   showExampleToast('prompt');
   showExampleToast('modalPrompt');*/
   //showExampleToast('passPrompt');
-  showExampleToast('modalPassPrompt');
+  setTimeout(function(){showExampleToast('modalPassPrompt');}, 1000);
 }
 /*
 ret = await multiToast.info('Info');
