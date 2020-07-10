@@ -1,3 +1,4 @@
+/*  style inspiration: https://ireade.github.io/Toast.js/  */
 .multiToast, .multiToast *{
   padding: 0;
   margin: 0;
@@ -6,5 +7,35 @@
 }
 
 .multiToast{
+  position: absolute; bottom: 0; left: 0;
+  width: 50vh;
+  padding: 1vh;
+  margin: 2vh;
+  max-width: 100%;
   border: 0px solid #000;
+  border-radius: .75vh;
+  box-shadow: 0 0 1vh 0 #888;
+  font-size: 2.5vh;
+  direction: rtl;
+}
+.multiToast *{
+  direction: ltr;
+}
+
+.multiToast p{
+  margin: 1vh;
+  font-size: 1em;
+}
+
+.multiToast input{
+  width: calc(100% - 2vh); /*why is box-sizing not workin???*/
+  margin: 1vh;
+  padding: .5vh;
+  font-size: .75em;
+}
+.multiToast button{
+  float: right;
+  margin: 1vh;
+  padding: .5vh 1vh;
+  font-size: .75em;
 }

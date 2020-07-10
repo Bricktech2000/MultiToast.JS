@@ -9,8 +9,8 @@ multiToast = {
     constructor(){
       this.toastElement = document.createElement('div');
       this.toastElement.classList.add('multiToast')
-      var hr = document.createElement('hr');
-      this.toastElement.appendChild(hr);
+      //var hr = document.createElement('hr');
+      //this.toastElement.appendChild(hr);
       this.core = {};
       /*this.core.createResolveParameter = function(){
         return {
@@ -138,16 +138,16 @@ multiToast = {
 
 multiToast.logToast = function(message){
   return new multiToast.Toast()
-    .setColor('background', '#ccc')
-    .setColor('accent', '#aaa')
+    .setColor('background', '#fff')
+    .setColor('accent', '#ccc')
     .setColor('text', '#000')
     .addItem('text', message)
     .addItem('submit', 'Ok', function(){ this.return(multiToast.ok) })
 }
 multiToast.promptToast = function(message){
   return new multiToast.Toast()
-    .setColor('background', '#ccc')
-    .setColor('accent', '#aaa')
+    .setColor('background', '#fff')
+    .setColor('accent', '#ccc')
     .setColor('text', '#000')
     .addItem('text', message)
     .addItem('input')
@@ -214,7 +214,7 @@ async function showExampleToast(type){
   console.log(ret);
 }
 window.onload = function(){
-  showExampleToast('log');
+  /*showExampleToast('log');
   showExampleToast('info');
   showExampleToast('modalInfo');
   showExampleToast('confirm');
@@ -222,7 +222,7 @@ window.onload = function(){
   showExampleToast('warn');
   showExampleToast('error');
   showExampleToast('success');
-  showExampleToast('prompt');
+  showExampleToast('prompt');*/
   showExampleToast('modalPrompt');
 }
 /*
