@@ -123,12 +123,11 @@ multiToast = {
       /*return new Promise(resolve, reject){
         resolve()
       }*/
-      var modal = document.createElement('p');
-      modal.innerHTML = '[[MODAL]]';
-      if(timeout == multiToast.modal){
-        this.toastElement.appendChild(modal);
+      //var modal = document.createElement('p');
+      //modal.innerHTML = '[[MODAL]]';
+      if(timeout == multiToast.modal)
+        //this.toastElement.appendChild(modal);
         this.core.showModalBackground();
-      }
       multiToast.toastContainer.appendChild(this.toastElement);
 
       return new Promise((resolve, reject) => {
