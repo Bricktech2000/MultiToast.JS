@@ -129,24 +129,55 @@ multiToast = {
       }*/
       //var modal = document.createElement('p');
       //modal.innerHTML = '[[MODAL]]';
-      if(timeout == multiToast.modal)
-        //this.toastElement.appendChild(modal);
-        this.modal = true;
-      if(this.modal){
-        //this.core.showModalBackground();
-        multiToast.toastContainer.appendChild(this.toastElement);
-        multiToast.core.modalToastQueue.push(this);
-        if(multiToast.core.modalToastQueue.length == 1){
-          this.toastElement.classList.add('visible');
-          this.core.showModalBackground();
+      function showNextToast(){
+        if(multiToast.core.modalToastQueue.length > 0){
+          //console.log(multiToast.core.toastStack)
+          var that = multiToast.core.modalToastQueue[0];
+          setTimeout(function(){
+            that.toastElement.classList.add('visible');
+          }, 100);
+          that.core.showModalBackground();
+        }else if(multiToast.core.toastStack.length > 0){
+          var that = multiToast.core.toastStack[multiToast.core.toastStack.length - 1];
+          setTimeout(function(){
+            that.toastElement.classList.add('visible');
+            that.toastElement.classList.remove('background');
+          }, 100);
+          //this.toastElement.classList.add('visible');
+          //this.core.showModalBackground();
         }
-      }else{
-        multiToast.core.toastStack.push(this);
       }
-      //multiToast.toastContainer.appendChild(this.toastElement);
-      setTimeout(function(){
+      function hideToastStack(){
+        if(multiToast.core.toastStack.length > 0){
+          var that = multiToast.core.toastStack[multiToast.core.toastStack.length - 1];
+          console.log(that);
+          that.toastElement.classList.add('background');
+        }
+      }
+      var arraysEmpty = false;
+      if(multiToast.core.toastStack.length == 0 && multiToast.core.modalToastQueue.length == 0)
+        arraysEmpty = true;
+      if(timeout == multiToast.modal)
+        this.modal = true;
+
+      multiToast.toastContainer.appendChild(this.toastElement);
+      if(this.modal){
+        hideToastStack();
+        //this.core.showModalBackground();
+        multiToast.core.modalToastQueue.push(this);
+        showNextToast();
+      }else{
+        hideToastStack();
         //this.toastElement.classList.add('visible');
-      }.bind(this), 100);
+        multiToast.core.toastStack.push(this);
+        showNextToast();
+      }
+      if(arraysEmpty)
+        showNextToast();
+      //multiToast.toastContainer.appendChild(this.toastElement);
+      //setTimeout(function(){
+        //this.toastElement.classList.add('visible');
+      //}.bind(this), 100);
 
       return new Promise((resolve, reject) => {
         var end = function(type, res){
@@ -155,14 +186,24 @@ multiToast = {
             multiToast.toastContainer.removeChild(this.toastElement);
           }.bind(this), 500);
           this.core.hideModalBackground();
-          multiToast.core.modalToastQueue.shift(); //pop_front()
-          if(multiToast.core.modalToastQueue.length > 0){
+          if(this.modal)
+            multiToast.core.modalToastQueue.shift(); //pop_front()
+          else
+            multiToast.core.toastStack.pop();
+          showNextToast();
+
+          resolve({ type: type, value: res });
+          //this.core.hideModalBackground();
+          //multiToast.core.modalToastQueue.shift(); //pop_front()
+          /*if(this.modal && multiToast.core.modalToastQueue.length > 0){
             var that = multiToast.core.modalToastQueue[0];
             that.toastElement.classList.add('visible');
             that.core.showModalBackground();
           }
-
-          resolve({ type: type, value: res });
+          if(!this.modal && multiToast.core.toastStack.length > 0){
+            var that = multiToast.core.toastStack[multiToast.core.toastStack.length - 1];
+            that.toastElement.classList.remove('background');
+          }*/
         }.bind(this);
         if(timeout !== undefined && timeout != multiToast.modal)
           var to = setTimeout(end, this.core.getValue(timeout), 'timeout', undefined);
@@ -281,20 +322,29 @@ window.addEventListener('load', function(){
 })
 
 window.onload = function(){
-  /*showExampleToast('log');
-  showExampleToast('info');
-  showExampleToast('modalInfo');
-  showExampleToast('confirm');
-  showExampleToast('modalConfirm');
-  showExampleToast('warn');
-  showExampleToast('error');
-  showExampleToast('success');
-  showExampleToast('prompt');
-  showExampleToast('modalPrompt');*/
+  multiToast.timeout = 300000;
+  //showExampleToast('log');
+  types = ['info', 'warn', 'modalConfirm', 'modalPassPrompt'];
+  //showExampleToast('info');
+  //showExampleToast('modalInfo');
+  //showExampleToast('confirm');
+  //showExampleToast('modalConfirm');
+  //showExampleToast('warn');
+  //showExampleToast('error');
+  //showExampleToast('success');
+  //showExampleToast('prompt');
+  //showExampleToast('modalPrompt');
   //showExampleToast('passPrompt');
   //setTimeout(function(){showExampleToast('modalPassPrompt');}, 1000);
-  showExampleToast('modalConfirm');
-  showExampleToast('modalPassPrompt')
+  //showExampleToast('modalConfirm');
+  //showExampleToast('modalPassPrompt')
+  for(var i = 0; i < types.length; i++)
+    setTimeout(function(i){
+      return function(){
+        console.log(i);
+        showExampleToast(types[i])
+      };
+    }(i), i * 1000);
 }
 /*
 ret = await multiToast.info('Info');

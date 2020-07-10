@@ -16,7 +16,7 @@
 }
 
 .multiToast{
-  position: absolute; bottom: 0; left: 0;
+  position: fixed; bottom: 0; left: 0;
   width: calc(var(--vh, 1vh) * 50);
   padding: calc(var(--vh, 1vh) * 1);
   margin: calc(var(--vh, 1vh) * 2);
@@ -28,11 +28,15 @@
   font-size: calc(var(--vh, 1vh) * 2.5);
   direction: rtl;
   pointer-events: all;
-  -webkit-transform: translateX(-125%);
-  transition: -webkit-transform .33s ease-out;
+  overflow: hidden;
+  -webkit-transform: translateX(-125%) translateY(0%);
+  transition: -webkit-transform .33s ease-out, opacity 1s ease-out;
 }
 .multiToast.visible{
-  -webkit-transform: translateX(0%);
+  -webkit-transform: translateX(0%) translateY(0%);
+}
+.multiToast.background{
+  -webkit-transform: translateX(0%) translateY(100%);
 }
 .multiToast *{
   direction: ltr;
