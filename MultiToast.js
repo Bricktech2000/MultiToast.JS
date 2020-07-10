@@ -321,34 +321,3 @@ window.addEventListener('load', function(){
 
   multiToast.toastContainer = container;
 })
-
-window.onload = function(){
-  //showExampleToast('log');
-  //showExampleToast('info');
-  //showExampleToast('modalInfo');
-  //showExampleToast('confirm');
-  //showExampleToast('modalConfirm');
-  //showExampleToast('warn');
-  //showExampleToast('error');
-  //showExampleToast('success');
-  //showExampleToast('prompt');
-  //showExampleToast('modalPrompt');
-  //showExampleToast('passPrompt');
-  //setTimeout(function(){showExampleToast('modalPassPrompt');}, 1000);
-  //showExampleToast('modalConfirm');
-  //showExampleToast('modalPassPrompt')
-  multiToast.timeout = 5000;
-  types = ['info', 'warn', 'modalConfirm', 'modalPassPrompt'];
-  for(var i = 0; i < types.length; i++)
-    setTimeout(function(i){
-      return function(){
-        console.log(i);
-        showExampleToast(types[i])
-      };
-    }(i), i * 1000);
-}
-/*
-ret = await multiToast.info('Info');
-ret = await multiToast.prompt('Prompt');
-console.log('toast returned: ', ret);
-*/
