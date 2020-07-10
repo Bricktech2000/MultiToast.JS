@@ -41,6 +41,14 @@ multiToast = {
         }
         return 0;
       }.bind(this);
+      this.core.showModalBackground = function(){
+        multiToast.toastContainer.style.backgroundColor = 'rgba(0, 0, 0, .25)';
+        multiToast.toastContainer.style.pointerEvents = 'none';
+      }
+      this.core.hideModalBackground = function(){
+        multiToast.toastContainer.style.backgroundColor = 'rgba(0, 0, 0, 0)';
+        multiToast.toastContainer.style.pointerEvents = 'all';
+      }
       this.inputCount = 0;
       this.inputs = [];
     }
@@ -119,15 +127,14 @@ multiToast = {
       modal.innerHTML = '[[MODAL]]';
       if(timeout == multiToast.modal){
         this.toastElement.appendChild(modal);
-        multiToast.toastContainer.style.backgroundColor = 'rgba(0, 0, 0, .25)';
-      }else{
-        multiToast.toastContainer.style.pointerEvents = 'none';
+        this.core.showModalBackground();
       }
       multiToast.toastContainer.appendChild(this.toastElement);
 
       return new Promise((resolve, reject) => {
         var end = function(type, res){
           multiToast.toastContainer.removeChild(this.toastElement);
+          this.core.hideModalBackground();
           resolve({ type: type, value: res });
         }.bind(this);
         if(timeout !== undefined && timeout != multiToast.modal)
@@ -256,8 +263,8 @@ window.onload = function(){
   showExampleToast('error');
   showExampleToast('success');
   showExampleToast('prompt');
-  showExampleToast('modalPrompt');
-  showExampleToast('passPrompt');*/
+  showExampleToast('modalPrompt');*/
+  //showExampleToast('passPrompt');
   showExampleToast('modalPassPrompt');
 }
 /*
