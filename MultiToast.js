@@ -89,10 +89,11 @@ multiToast = {
           this.toastElement.appendChild(submit);
           return this;
         case 'input':
+        case 'pass':
           this.core.checkParamCount('addItem(' + type + ')', params, 0, 1);
           this.inputs.push(undefined);
           var input = document.createElement('input');
-          input.type = 'text';
+          input.type = 'text'; if(type == 'pass') input.type = 'password';
           input.placeholder = params[0] !== undefined ? this.core.getValue(params[0]) : '';
           var inputCount = this.inputCount;
           input.onkeyup = function(){this.inputs[inputCount] = input.value;}.bind(this);
@@ -139,7 +140,7 @@ multiToast = {
 multiToast.logToast = function(message){
   return new multiToast.Toast()
     .setColor('background', '#fff')
-    .setColor('accent', '#ccc')
+    .setColor('accent', '#ddd')
     .setColor('text', '#000')
     .addItem('text', message)
     .addItem('submit', 'Ok', function(){ this.return(multiToast.ok) })
@@ -147,10 +148,20 @@ multiToast.logToast = function(message){
 multiToast.promptToast = function(message){
   return new multiToast.Toast()
     .setColor('background', '#fff')
-    .setColor('accent', '#ccc')
+    .setColor('accent', '#ddd')
     .setColor('text', '#000')
     .addItem('text', message)
     .addItem('input')
+    .addItem('submit', 'Ok', function(){ this.return(this.inputs[0]) })
+    .addItem('button', 'Cancel', function(){ this.return(multiToast.cancel) })
+}
+multiToast.passPromptToast = function(message){
+  return new multiToast.Toast()
+    .setColor('background', '#dfd')
+    .setColor('accent', '#0d0')
+    .setColor('text', '#000')
+    .addItem('text', message)
+    .addItem('pass')
     .addItem('submit', 'Ok', function(){ this.return(this.inputs[0]) })
     .addItem('button', 'Cancel', function(){ this.return(multiToast.cancel) })
 }
@@ -161,46 +172,46 @@ multiToast.register('log', function(message){
 });
 multiToast.register('info', function(message){
   return multiToast.logToast(message)
-    .setColor('background', '#ccf')
-    .setColor('accent', '#00c')
+    .setColor('background', '#df')
+    .setColor('accent', '#00d')
     .show(() => {return multiToast.timeout});
 });
 multiToast.register('modalInfo', function(message){
   return multiToast.logToast(message)
-    .setColor('background', '#ccf')
-    .setColor('accent', '#00c')
+    .setColor('background', '#df')
+    .setColor('accent', '#00d')
     .show(multiToast.modal);
 });
 multiToast.register('confirm', function(message){
   return multiToast.logToast(message)
-    .setColor('background', '#ccf')
-    .setColor('accent', '#00c')
+    .setColor('background', '#df')
+    .setColor('accent', '#00d')
     .addItem('button', 'Cancel', function(){ this.return(multiToast.cancel) })
     .show(() => {return multiToast.timeout});
 });
 multiToast.register('modalConfirm', function(message){
   return multiToast.logToast(message)
-    .setColor('background', '#ccf')
-    .setColor('accent', '#00c')
+    .setColor('background', '#df')
+    .setColor('accent', '#00d')
     .addItem('button', 'Cancel', function(){ this.return(multiToast.cancel) })
     .show(multiToast.modal);
 });
 multiToast.register('warn', function(message){
   return multiToast.logToast(message)
-    .setColor('background', '#ffc')
-    .setColor('accent', '#cc0')
+    .setColor('background', '#ffd')
+    .setColor('accent', '#d0')
     .show(() => {return multiToast.timeout});
 });
 multiToast.register('error', function(message){
   return multiToast.logToast(message)
-    .setColor('background', '#fcc')
-    .setColor('accent', '#c00')
+    .setColor('background', '#fdd')
+    .setColor('accent', '#d00')
     .show(() => {return multiToast.timeout});
 });
 multiToast.register('success', function(message){
   return multiToast.logToast(message)
-    .setColor('background', '#cfc')
-    .setColor('accent', '#0c0')
+    .setColor('background', '#dfd')
+    .setColor('accent', '#0d0')
     .show(() => {return multiToast.timeout});
 });
 multiToast.register('prompt', function(message){
@@ -208,6 +219,12 @@ multiToast.register('prompt', function(message){
 });
 multiToast.register('modalPrompt', function(message){
   return multiToast.promptToast(message).show(multiToast.modal);
+});
+multiToast.register('passPrompt', function(message){
+  return multiToast.passPromptToast(message).show(() => {return multiToast.timeout});
+});
+multiToast.register('modalPassPrompt', function(message){
+  return multiToast.passPromptToast(message).show(multiToast.modal);
 });
 async function showExampleToast(type){
   var ret = await multiToast[type](type);
@@ -223,7 +240,9 @@ window.onload = function(){
   showExampleToast('error');
   showExampleToast('success');
   showExampleToast('prompt');*/
-  showExampleToast('modalPrompt');
+  //showExampleToast('modalPrompt');
+  //showExampleToast('passPrompt');
+  showExampleToast('modalPassPrompt');
 }
 /*
 ret = await multiToast.info('Info');
