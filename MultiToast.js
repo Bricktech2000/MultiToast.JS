@@ -156,8 +156,8 @@ multiToast.promptToast = function(message){
 }
 multiToast.passPromptToast = function(message){
   return new multiToast.Toast()
-    .setColor('background', '#dfd')
-    .setColor('accent', '#0d0')
+    .setColor('background', '#efe')
+    .setColor('accent', '#0e0')
     .setColor('text', '#000')
     .addItem('text', message)
     .addItem('pass')
@@ -171,34 +171,34 @@ multiToast.register('log', function(message){
 });
 multiToast.register('info', function(message){
   return multiToast.logToast(message)
-    .setColor('background', '#df')
-    .setColor('accent', '#00d')
+    .setColor('background', '#eef')
+    .setColor('accent', '#00e')
     .show(() => {return multiToast.timeout});
 });
 multiToast.register('modalInfo', function(message){
   return multiToast.logToast(message)
-    .setColor('background', '#df')
-    .setColor('accent', '#00d')
+    .setColor('background', '#eef')
+    .setColor('accent', '#00e')
     .show(multiToast.modal);
 });
 multiToast.register('confirm', function(message){
   return multiToast.logToast(message)
-    .setColor('background', '#df')
-    .setColor('accent', '#00d')
+    .setColor('background', '#eef')
+    .setColor('accent', '#00e')
     .addItem('button', 'Cancel', function(){ this.return(multiToast.cancel) })
     .show(() => {return multiToast.timeout});
 });
 multiToast.register('modalConfirm', function(message){
   return multiToast.logToast(message)
-    .setColor('background', '#df')
-    .setColor('accent', '#00d')
+    .setColor('background', '#eef')
+    .setColor('accent', '#00e')
     .addItem('button', 'Cancel', function(){ this.return(multiToast.cancel) })
     .show(multiToast.modal);
 });
 multiToast.register('warn', function(message){
   return multiToast.logToast(message)
-    .setColor('background', '#ffd')
-    .setColor('accent', '#d0')
+    .setColor('background', '#ffe')
+    .setColor('accent', '#ee0')
     .show(() => {return multiToast.timeout});
 });
 multiToast.register('error', function(message){
@@ -229,6 +229,10 @@ async function showExampleToast(type){
   var ret = await multiToast[type](type);
   console.log(ret);
 }
+//https://css-tricks.com/the-trick-to-viewport-units-on-mobile/
+var vh = window.innerHeight * 0.01;
+document.documentElement.style.setProperty('--vh', vh + 'px');
+
 window.onload = function(){
   /*showExampleToast('log');
   showExampleToast('info');

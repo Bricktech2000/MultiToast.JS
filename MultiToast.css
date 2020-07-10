@@ -8,15 +8,15 @@
 
 .multiToast{
   position: absolute; bottom: 0; left: 0;
-  width: 50vh;
-  padding: 1vh;
-  margin: 2vh;
-  max-width: calc(100vw - 4vh);
+  width: calc(var(--vh, 1vh) * 50);
+  padding: calc(var(--vh, 1vh) * 1);
+  margin: calc(var(--vh, 1vh) * 2);
+  max-width: calc(100vw - calc(var(--vh, 1vh) * 4));
   border: 0px solid #000;
-  border-left-width: .5vh;
-  border-radius: .75vh;
-  box-shadow: 0 0 1vh 0 #888;
-  font-size: 2.5vh;
+  border-left-width: calc(var(--vh, 1vh) * .5);
+  border-radius: calc(var(--vh, 1vh) * .75);
+  box-shadow: 0 0 calc(var(--vh, 1vh) * 1) 0 #888;
+  font-size: calc(var(--vh, 1vh) * 2.5);
   direction: rtl;
 }
 .multiToast *{
@@ -25,24 +25,25 @@
 
 
 .multiToast p, .multiToast input, .multiToast button{
-  border-radius: .75vh;
+  border-radius: calc(var(--vh, 1vh) * .75);
   border: none;
   font-size: .85em;
-  background: #ddd;
+  background: #eee;
 }
 .multiToast input{
   width: calc(100% - 2vh); /*why is box-sizing not workin???*/
-  margin: 1vh;
-  padding: .75vh;
+  margin: calc(var(--vh, 1vh) * 1);
+  padding: calc(var(--vh, 1vh) * .75);
   background: #fff;
 }
 .multiToast button{
   float: right;
-  margin: 1vh;
-  padding: .75vh 1.25vh;
+  margin: calc(var(--vh, 1vh) * 1);
+  padding: calc(var(--vh, 1vh) * .75) calc(var(--vh, 1vh) * 1.25);
+  box-shadow: 0 0 calc(var(--vh, 1vh) * 1) 0 #ccc;
 }
 .multiToast p{
-  margin: 1vh;
+  margin: calc(var(--vh, 1vh) * 1);
   font-size: 1em;
   background: rgba(0, 0, 0, 0);
 }
