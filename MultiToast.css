@@ -25,6 +25,7 @@
   box-shadow: 0 0 calc(var(--vh, 1vh) * 1) 0 #888;
   font-size: calc(var(--vh, 1vh) * 2.5);
   direction: rtl;
+  pointer-events: all;
 }
 .multiToast *{
   direction: ltr;
