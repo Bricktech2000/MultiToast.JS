@@ -52,7 +52,6 @@ multiToast = {
           this.toastElement.style.backgroundColor = params[0];
           return this;
         case 'accent':
-          this.toastElement.style.borderLeftWidth = '5px';
           this.toastElement.style.borderLeftColor = params[0];
           return this;
         case 'text':

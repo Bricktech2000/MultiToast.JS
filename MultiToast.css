@@ -1,5 +1,5 @@
 /*  style inspiration: https://ireade.github.io/Toast.js/  */
-.multiToast, .multiToast *{
+* {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
@@ -11,8 +11,9 @@
   width: 50vh;
   padding: 1vh;
   margin: 2vh;
-  max-width: 100%;
+  max-width: calc(100vw - 4vh);
   border: 0px solid #000;
+  border-left-width: .5vh;
   border-radius: .75vh;
   box-shadow: 0 0 1vh 0 #888;
   font-size: 2.5vh;
@@ -22,20 +23,26 @@
   direction: ltr;
 }
 
-.multiToast p{
-  margin: 1vh;
-  font-size: 1em;
-}
 
+.multiToast p, .multiToast input, .multiToast button{
+  border-radius: .75vh;
+  border: none;
+  font-size: .85em;
+  background: #ddd;
+}
 .multiToast input{
   width: calc(100% - 2vh); /*why is box-sizing not workin???*/
   margin: 1vh;
-  padding: .5vh;
-  font-size: .75em;
+  padding: .75vh;
+  background: #fff;
 }
 .multiToast button{
   float: right;
   margin: 1vh;
-  padding: .5vh 1vh;
-  font-size: .75em;
+  padding: .75vh 1.25vh;
+}
+.multiToast p{
+  margin: 1vh;
+  font-size: 1em;
+  background: rgba(0, 0, 0, 0);
 }
