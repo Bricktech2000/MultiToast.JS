@@ -54,7 +54,14 @@
   margin: calc(var(--vh, 1vh) * 1);
   padding: calc(var(--vh, 1vh) * .75);
   background: #fff;
+  border: 0px solid #000;
+  border-bottom-width: calc(var(--vh, 1vh) * .25);
+  border-bottom-color: #ccc;
 }
+/*.multiToast input:focus{
+  border-width: calc(var(--vh, 1vh) * .25);
+  border-color: #ccc;
+}*/
 .multiToast button{
   float: right;
   margin: calc(var(--vh, 1vh) * 1);
