@@ -58,7 +58,10 @@
           while(true){
             var pass = await multiToast.modal().log().auth('Please enter the password: ');
             if(pass.value === correctPass) break;
-            await multiToast.modal().error().alert('Wrong password. The correct password is "' + correctPass + '"')
+            if(pass.value === multiToast.cancel || pass.value == '')
+              await multiToast.modal().error().toast('You need to enter a password!');
+            else
+              await multiToast.modal().error().alert('Wrong password. The correct password is "' + correctPass + '"')
           }
           multiToast.success().toast('Successfully authenticated!');
         }
