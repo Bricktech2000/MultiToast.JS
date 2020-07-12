@@ -56,9 +56,9 @@
         async function simulateLogin(){
           var correctPass = 'toast';
           while(true){
-            var pass = await multiToast.modal().auth('Please enter the password: ');
+            var pass = await multiToast.modal().log().auth('Please enter the password: ');
             if(pass.value === correctPass) break;
-            await multiToast.sync().modal().error().alert('Wrong password. The correct password is "' + correctPass + '"')
+            await multiToast.modal().error().alert('Wrong password. The correct password is "' + correctPass + '"')
           }
           multiToast.success().toast('Successfully authenticated!');
         }

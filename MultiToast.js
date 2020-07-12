@@ -422,7 +422,7 @@ multiToast.register('login', function(text = '', placeholder1 = '', placeholder2
     .addItem('text', text)
     .addItem('input', placeholder1)
     .addItem('pass', placeholder2)
-    .addItem('submit', 'Ok', function(){ this.return([this.inputs[0], this.inputs[1]]) })
+    .addItem('submit', 'Ok', function(){ this.return({user: this.inputs[0], pass: this.inputs[1]}) })
     .addItem('button', 'Cancel', function(){ this.return(multiToast.cancel) })
     .show()
 });
