@@ -264,6 +264,10 @@ multiToast = {
       }else{
         hideToastStack();
         multiToast.core.toastStack.push(this);
+        if(multiToast.core.syncToastQueue.length > 0){
+          this.toastElement.classList.add('visible');
+          hideToastStack();
+        }
         this.startTimeout();
       }
       //show the next toast and return
