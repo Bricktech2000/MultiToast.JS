@@ -81,11 +81,9 @@ multiToast = {
     }
     //https://stackoverflow.com/questions/6396046/unlimited-arguments-in-a-javascript-function
     setParam(type, ...params){
-      switch(type){
-        case 'background':
-        case 'accent':
-        case 'text':
+      if(type == 'background' || type == 'accent' || type == 'text')
           this.core.checkParamCount('setParam(' + type + ')', params, 1, 1);
+      switch(type){
         case 'background':
           this.toastElement.style.backgroundColor = params[0];
           return this;
@@ -211,7 +209,6 @@ multiToast = {
         }.bind(this);
         var to;
         this.startTimeout = function(){
-          console.log('startTimeout');
           if(this.core.params.timeout !== undefined && !to)
             to = setTimeout(end, this.core.getValue(this.core.params.timeout), 'timeout', undefined);
         }.bind(this);
@@ -354,6 +351,23 @@ multiToast.register('async', function(value = true){
 multiToast.register('timeout', function(value = () => {return multiToast.defaultTimeout}){
   this.setParam('timeout', value);
 });
+
+multiToast.register('log', function(){
+  this.setParam('accent', '#ddd');
+});
+multiToast.register('info', function(){
+  this.setParam('accent', '#00d');
+});
+multiToast.register('warn', function(){
+  this.setParam('accent', '#dd0');
+});
+multiToast.register('error', function(){
+  this.setParam('accent', '#d00');
+});
+multiToast.register('success', function(){
+  this.setParam('accent', '#0d0');
+});
+
 multiToast.register('toast', function(message = ''){
   this.setParam('timeout', () => {return multiToast.defaultTimeout}, true)
     .setParam('sync', false, true)

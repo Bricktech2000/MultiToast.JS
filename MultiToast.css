@@ -24,7 +24,7 @@
   background: #fff;
   border: 0px solid #000;
   border-left-width: calc(var(--vh, 1vh) * .5);
-  border-left-color: #ccc;
+  border-left-color: #ddd;
   border-radius: calc(var(--vh, 1vh) * .75);
   box-shadow: 0 0 calc(var(--vh, 1vh) * 1) 0 #888;
   font-size: calc(var(--vh, 1vh) * 2.5);
@@ -58,7 +58,7 @@
   background: #fff;
   border: 0px solid #000;
   border-bottom-width: calc(var(--vh, 1vh) * .25);
-  border-bottom-color: #ccc;
+  border-bottom-color: #ddd;
 }
 /*.multiToast input:focus{
   border-width: calc(var(--vh, 1vh) * .25);
