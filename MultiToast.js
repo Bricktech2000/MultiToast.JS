@@ -30,6 +30,7 @@ multiToast = {
   },
   //default timeout for toasts
   defaultTimeout: 3000,
+  iconPath: './multiToastIcons/',
   //the toast class, instantiated to get a new toast
   Toast: class {
     //constructor...
@@ -305,7 +306,7 @@ multiToast.register('timeout', function(value = () => {return multiToast.default
         this.setParam('accent', type.color);
         //if the 'icon' flag was true, add an icon to the toast
         if(icon)
-          this.addItem('icon', './multiToastIcons/' + type.name + '.svg');
+          this.addItem('icon', () => {return multiToast.iconPath + type.name + '.svg'});
       }
     }(type));
   }
