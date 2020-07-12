@@ -129,7 +129,7 @@ multiToast = {
           //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_objects/Function/bind
           submit.innerHTML = this.core.getValue(params[0]);
           submit.onclick = params[1] !== undefined ? params[1].bind(this) : null;
-          this.toastElement.addEventListener('keydown', function(e){
+          this.toastElement.addEventListener('keypress', function(e){
             if(e.keyCode == 13) submit.click();
           })
           this.toastElement.appendChild(submit);
@@ -180,6 +180,8 @@ multiToast = {
           if(that.core.params.modal)
             that.core.showModalBackground();
           that.startTimeout();
+          var input = that.toastElement.getElementsByTagName('input')[0] || that.toastElement.getElementsByTagName('button')[0];
+          if(input) input.focus();
         }else if(multiToast.core.toastStack.length > 0){
           var that = multiToast.core.toastStack[multiToast.core.toastStack.length - 1];
           setTimeout(function(){
@@ -188,6 +190,8 @@ multiToast = {
           }, 100);
           if(that.core.params.modal)
             that.core.showModalBackground();
+          var input = that.toastElement.getElementsByTagName('input')[0] || that.toastElement.getElementsByTagName('button')[0];
+          if(input) input.focus();
           //this.toastElement.classList.add('visible');
           //this.core.showModalBackground();
         }
@@ -205,6 +209,7 @@ multiToast = {
       //  this.modal = true;
       var promise = new Promise((resolve, reject) => {
         var end = function(type, res){
+          if(this.hasReturned) return; this.hasReturned = true;
           this.toastElement.classList.remove('visible');
           setTimeout(function(){
             multiToast.toastContainer.removeChild(this.toastElement);
