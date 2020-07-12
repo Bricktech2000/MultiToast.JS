@@ -27,15 +27,8 @@ multiToast = {
   Toast: class {
     constructor(){
       this.toastElement = document.createElement('div');
-      this.toastElement.classList.add('multiToast')
-      //var hr = document.createElement('hr');
-      //this.toastElement.appendChild(hr);
+      this.toastElement.classList.add('multiToast');
       this.core = {};
-      /*this.core.createResolveParameter = function(){
-        return {
-          buttons: [], inputs: []
-        };
-      }*/
       this.core.getValue = function(val){
         //https://stackoverflow.com/questions/798340/testing-if-value-is-a-function
         if(typeof val === 'function') return val();
@@ -155,46 +148,24 @@ multiToast = {
       }
       this.core.warn('addItem received an invalid type: ' + type);
     }
-    /*setParam(type, ...params){
-      switch(type){
-        case 'modal':
-          this.core.checkParamCount('setParam(' + type + ')', params, 1, 1);
-          this.modal = this.core.getValue(params[0]);
-          return this;
-      }
-      this.core.warn('setParam received an invalid type: ' + type);
-    }*/
     show(){
-      /*return new Promise(resolve, reject){
-        resolve()
-      }*/
-      //var modal = document.createElement('p');
-      //modal.innerHTML = '[[MODAL]]';
       var showNextToast = function(){
-        if(multiToast.core.syncToastQueue.length > 0){
-          //console.log(multiToast.core.toastStack)
-          var that = multiToast.core.syncToastQueue[0];
-          setTimeout(function(){
-            that.toastElement.classList.add('visible');
-          }, 100);
-          if(that.core.params.modal)
-            that.core.showModalBackground();
-          that.startTimeout();
-          var input = that.toastElement.getElementsByTagName('input')[0] || that.toastElement.getElementsByTagName('button')[0];
-          if(input) input.focus();
-        }else if(multiToast.core.toastStack.length > 0){
-          var that = multiToast.core.toastStack[multiToast.core.toastStack.length - 1];
-          setTimeout(function(){
-            that.toastElement.classList.add('visible');
-            that.toastElement.classList.remove('background');
-          }, 100);
-          if(that.core.params.modal)
-            that.core.showModalBackground();
-          var input = that.toastElement.getElementsByTagName('input')[0] || that.toastElement.getElementsByTagName('button')[0];
-          if(input) input.focus();
-          //this.toastElement.classList.add('visible');
-          //this.core.showModalBackground();
-        }
+        var that;
+        if(multiToast.core.syncToastQueue.length > 0)
+          that = multiToast.core.syncToastQueue[0];
+        else if(multiToast.core.toastStack.length > 0)
+          that = multiToast.core.toastStack[multiToast.core.toastStack.length - 1];
+        else return;
+
+        setTimeout(function(){
+          that.toastElement.classList.add('visible');
+          that.toastElement.classList.remove('background');
+        }, 100);
+        if(that.core.params.modal)
+          that.core.showModalBackground();
+        if(multiToast.core.syncToastQueue.length > 0) that.startTimeout();
+        var input = that.toastElement.getElementsByTagName('input')[0] || that.toastElement.getElementsByTagName('button')[0];
+        if(input) input.focus();
       }.bind(this);
       function hideToastStack(){
         if(multiToast.core.toastStack.length > 0){
@@ -205,8 +176,6 @@ multiToast = {
       var arraysEmpty = false;
       if(multiToast.core.toastStack.length == 0 && multiToast.core.syncToastQueue.length == 0)
         arraysEmpty = true;
-      //if(timeout == multiToast.modal)
-      //  this.modal = true;
       var promise = new Promise((resolve, reject) => {
         var end = function(type, res){
           if(this.hasReturned) return; this.hasReturned = true;
@@ -237,123 +206,18 @@ multiToast = {
       multiToast.toastContainer.appendChild(this.toastElement);
       if(this.core.params.sync){
         hideToastStack();
-        //this.core.showModalBackground();
         multiToast.core.syncToastQueue.push(this);
         showNextToast();
       }else{
         hideToastStack();
-        //this.toastElement.classList.add('visible');
         multiToast.core.toastStack.push(this);
         this.startTimeout();
         showNextToast();
       }
-      //if(arraysEmpty)
-      //  showNextToast();
-      //multiToast.toastContainer.appendChild(this.toastElement);
-      //setTimeout(function(){
-        //this.toastElement.classList.add('visible');
-      //}.bind(this), 100);
-
       return promise;
     }
   }
 }
-
-/*multiToast.logToast = function(message){
-  return new multiToast.Toast()
-    .setColor('background', '#fff')
-    .setColor('accent', '#ddd')
-    .setColor('text', '#000')
-    .addItem('text', message)
-    .addItem('submit', 'Ok', function(){ this.return(multiToast.ok) })
-}
-multiToast.promptToast = function(message){
-  return new multiToast.Toast()
-    .setColor('background', '#fff')
-    .setColor('accent', '#ddd')
-    .setColor('text', '#000')
-    .addItem('text', message)
-    .addItem('input')
-    .addItem('submit', 'Ok', function(){ this.return(this.inputs[0]) })
-    .addItem('button', 'Cancel', function(){ this.return(multiToast.cancel) })
-}
-multiToast.passPromptToast = function(message){
-  return new multiToast.Toast()
-    //.setColor('background', '#efe')
-    .setColor('background', '#fff')
-    .setColor('accent', '#0e0')
-    .setColor('text', '#000')
-    .addItem('text', message)
-    .addItem('pass')
-    .addItem('submit', 'Ok', function(){ this.return(this.inputs[0]) })
-    .addItem('button', 'Cancel', function(){ this.return(multiToast.cancel) })
-}
-
-multiToast.timeout = 5000;
-multiToast.register('log', function(message){
-  return multiToast.logToast(message).show(() => {return multiToast.timeout});
-});
-multiToast.register('info', function(message){
-  return multiToast.logToast(message)
-    //.setColor('background', '#eef')
-    .setColor('accent', '#00e')
-    .show(() => {return multiToast.timeout});
-});
-multiToast.register('modalInfo', function(message){
-  return multiToast.logToast(message)
-    //.setColor('background', '#eef')
-    .setColor('accent', '#00e')
-    .show(multiToast.modal);
-});
-multiToast.register('confirm', function(message){
-  return multiToast.logToast(message)
-    //.setColor('background', '#eef')
-    .setColor('accent', '#00e')
-    .addItem('button', 'Cancel', function(){ this.return(multiToast.cancel) })
-    .show(() => {return multiToast.timeout});
-});
-multiToast.register('modalConfirm', function(message){
-  return multiToast.logToast(message)
-    //.setColor('background', '#eef')
-    .setColor('accent', '#00e')
-    .addItem('button', 'Cancel', function(){ this.return(multiToast.cancel) })
-    .show(multiToast.modal);
-});
-multiToast.register('warn', function(message){
-  return multiToast.logToast(message)
-    //.setColor('background', '#ffe')
-    .setColor('accent', '#ee0')
-    .show(() => {return multiToast.timeout});
-});
-multiToast.register('error', function(message){
-  return multiToast.logToast(message)
-    //.setColor('background', '#fdd')
-    .setColor('accent', '#d00')
-    .show(() => {return multiToast.timeout});
-});
-multiToast.register('success', function(message){
-  return multiToast.logToast(message)
-    //.setColor('background', '#dfd')
-    .setColor('accent', '#0d0')
-    .show(() => {return multiToast.timeout});
-});
-multiToast.register('prompt', function(message){
-  return multiToast.promptToast(message).show(() => {return multiToast.timeout});
-});
-multiToast.register('modalPrompt', function(message){
-  return multiToast.promptToast(message).show(multiToast.modal);
-});
-multiToast.register('passPrompt', function(message){
-  return multiToast.passPromptToast(message).show(() => {return multiToast.timeout});
-});
-multiToast.register('modalPassPrompt', function(message){
-  return multiToast.passPromptToast(message).show(multiToast.modal);
-});*/
-
-/*async function showExampleToast(type){
-  var ret = await multiToast[type](type);
-  console.log(ret);
-}*/
 
 multiToast.register('modal', function(value = true){
   this.setParam('modal', value);
