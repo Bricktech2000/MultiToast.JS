@@ -53,12 +53,17 @@ multiToast = {
         multiToast.toastContainer.style.backgroundColor = 'rgba(0, 0, 0, 0)';
         multiToast.toastContainer.style.pointerEvents = 'none';
       }
+      this.core.params = {};
+      this.core.setParam = function(param, value, keep = false){
+        if(keep && this.core.params[param] == undefined || keep == false)
+          this.core.params[param] = value;
+      }
       this.inputCount = 0;
       this.inputs = [];
     }
     //https://stackoverflow.com/questions/6396046/unlimited-arguments-in-a-javascript-function
-    setColor(type, ...params){
-      this.core.checkParamCount('setColor', params, 1, 1);
+    setParam(type, ...params){
+      this.core.checkParamCount('setParam(' + type + ')', params, 1, 1);
       switch(type){
         case 'background':
           this.toastElement.style.backgroundColor = params[0];
@@ -69,8 +74,13 @@ multiToast = {
         case 'text':
           this.toastElement.style.color = params[0];
           return this;
+        case 'modal':
+        case 'sync':
+        case 'timeout':
+          this.core.setParam(type, ...params);
+          return this;
       }
-      this.core.warn('setColor received an invalid type: ' + type);
+      this.core.warn('setParam received an invalid type: ' + type);
     }
     addItem(type, ...params){
       switch(type){
@@ -123,16 +133,16 @@ multiToast = {
       }
       this.core.warn('setParam received an invalid type: ' + type);
     }*/
-    show(timeout){
+    show(){
       /*return new Promise(resolve, reject){
         resolve()
       }*/
       //var modal = document.createElement('p');
       //modal.innerHTML = '[[MODAL]]';
       function showNextToast(){
-        if(multiToast.core.modalToastQueue.length > 0){
+        if(multiToast.core.syncToastQueue.length > 0){
           //console.log(multiToast.core.toastStack)
-          var that = multiToast.core.modalToastQueue[0];
+          var that = multiToast.core.syncToastQueue[0];
           setTimeout(function(){
             that.toastElement.classList.add('visible');
           }, 100);
@@ -155,16 +165,16 @@ multiToast = {
         }
       }
       var arraysEmpty = false;
-      if(multiToast.core.toastStack.length == 0 && multiToast.core.modalToastQueue.length == 0)
+      if(multiToast.core.toastStack.length == 0 && multiToast.core.syncToastQueue.length == 0)
         arraysEmpty = true;
-      if(timeout == multiToast.modal)
-        this.modal = true;
+      //if(timeout == multiToast.modal)
+      //  this.modal = true;
 
       multiToast.toastContainer.appendChild(this.toastElement);
-      if(this.modal){
+      if(this.core.params.modal){
         hideToastStack();
         //this.core.showModalBackground();
-        multiToast.core.modalToastQueue.push(this);
+        multiToast.core.syncToastQueue.push(this);
         showNextToast();
       }else{
         hideToastStack();
@@ -186,27 +196,16 @@ multiToast = {
             multiToast.toastContainer.removeChild(this.toastElement);
           }.bind(this), 500);
           this.core.hideModalBackground();
-          if(this.modal)
-            multiToast.core.modalToastQueue.shift(); //pop_front()
+          if(this.core.params.modal)
+            multiToast.core.syncToastQueue.shift(); //pop_front()
           else
             multiToast.core.toastStack.pop();
           showNextToast();
 
           resolve({ type: type, value: res });
-          //this.core.hideModalBackground();
-          //multiToast.core.modalToastQueue.shift(); //pop_front()
-          /*if(this.modal && multiToast.core.modalToastQueue.length > 0){
-            var that = multiToast.core.modalToastQueue[0];
-            that.toastElement.classList.add('visible');
-            that.core.showModalBackground();
-          }
-          if(!this.modal && multiToast.core.toastStack.length > 0){
-            var that = multiToast.core.toastStack[multiToast.core.toastStack.length - 1];
-            that.toastElement.classList.remove('background');
-          }*/
         }.bind(this);
-        if(timeout !== undefined && timeout != multiToast.modal)
-          var to = setTimeout(end, this.core.getValue(timeout), 'timeout', undefined);
+        if(this.core.params.timeout !== undefined && !this.core.params.modal)
+          var to = setTimeout(end, this.core.getValue(this.core.params.timeout), 'timeout', undefined);
         this.return = function(res){
           end('return', res);
           if(to) clearTimeout(to);
@@ -216,7 +215,7 @@ multiToast = {
   }
 }
 
-multiToast.logToast = function(message){
+/*multiToast.logToast = function(message){
   return new multiToast.Toast()
     .setColor('background', '#fff')
     .setColor('accent', '#ddd')
@@ -305,11 +304,12 @@ multiToast.register('passPrompt', function(message){
 });
 multiToast.register('modalPassPrompt', function(message){
   return multiToast.passPromptToast(message).show(multiToast.modal);
-});
-async function showExampleToast(type){
+});*/
+
+/*async function showExampleToast(type){
   var ret = await multiToast[type](type);
   console.log(ret);
-}
+}*/
 //https://css-tricks.com/the-trick-to-viewport-units-on-mobile/
 var vh = window.innerHeight * 0.01;
 document.documentElement.style.setProperty('--vh', vh + 'px');
