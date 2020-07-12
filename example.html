@@ -29,6 +29,17 @@
               showExampleToast(types[i])
             };
           }(i), i * 1000);*/
+        multiToast.defaultTimeout = 3000;
+        setTimeout(function () {
+          multiToast.modal().timeout(8000).toast('Test Toast -2');
+        }, 0);
+        setTimeout(function () {
+          multiToast.modal().timeout(8000).toast('Test Toast -1');
+        }, 1000);
+        setTimeout(function () {
+          multiToast.modal().sync().toast('Test Toast 1');
+          multiToast.modal().sync().toast('Test Toast 2');
+        }, 2000);
       }
     </script>
     <link rel="stylesheet" href="MultiToast.css"></link>

@@ -21,8 +21,10 @@
   padding: calc(var(--vh, 1vh) * 1);
   margin: calc(var(--vh, 1vh) * 2);
   max-width: calc(100vw - calc(var(--vh, 1vh) * 4));
+  background: #fff;
   border: 0px solid #000;
   border-left-width: calc(var(--vh, 1vh) * .5);
+  border-left-color: #ccc;
   border-radius: calc(var(--vh, 1vh) * .75);
   box-shadow: 0 0 calc(var(--vh, 1vh) * 1) 0 #888;
   font-size: calc(var(--vh, 1vh) * 2.5);
