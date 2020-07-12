@@ -141,6 +141,12 @@ multiToast = {
           this.toastElement.appendChild(input);
           this.inputCount++;
           return this;
+        case 'icon':
+          this.core.checkParamCount('addItem(' + type + ')', params, 1, 1);
+          var img = document.createElement('img');
+          img.src = this.core.getValue(params[0]);
+          this.toastElement.appendChild(img);
+          return this;
       }
       this.core.warn('addItem received an invalid type: ' + type);
     }
@@ -352,21 +358,24 @@ multiToast.register('timeout', function(value = () => {return multiToast.default
   this.setParam('timeout', value);
 });
 
-multiToast.register('log', function(){
-  this.setParam('accent', '#ddd');
-});
-multiToast.register('info', function(){
-  this.setParam('accent', '#00d');
-});
-multiToast.register('warn', function(){
-  this.setParam('accent', '#dd0');
-});
-multiToast.register('error', function(){
-  this.setParam('accent', '#d00');
-});
-multiToast.register('success', function(){
-  this.setParam('accent', '#0d0');
-});
+(function(){
+  var types = [
+    {name: 'log', color: '#ddd'},
+    {name: 'info', color: '#00d'},
+    {name: 'warn', color: '#dd0'},
+    {name: 'error', color: '#d00'},
+    {name: 'success', color: '#0d0'},
+  ];
+  for(var type of types){
+    multiToast.register(type.name, function(type){
+      return function(icon = true){
+        this.setParam('accent', type.color);
+        if(icon)
+          this.addItem('icon', './multiToastIcons/' + type.name + '.svg');
+      }
+    }(type));
+  }
+})();
 
 multiToast.register('toast', function(message = ''){
   this.setParam('timeout', () => {return multiToast.defaultTimeout}, true)

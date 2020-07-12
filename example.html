@@ -40,6 +40,9 @@
           multiToast.modal().sync().error().toast('Test Toast 1');
           multiToast.modal().sync().success().toast('Test Toast 2');
         }, 2000);
+        setTimeout(function () {
+          multiToast.modal().log().toast('Test Toast 3');
+        }, 10000);
       }
     </script>
     <link rel="stylesheet" href="MultiToast.css"></link>
