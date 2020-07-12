@@ -28,11 +28,12 @@
   border-radius: calc(var(--vh, 1vh) * .75);
   box-shadow: 0 0 calc(var(--vh, 1vh) * 1) 0 #888;
   font-size: calc(var(--vh, 1vh) * 2.5);
-  direction: rtl;
+  /*direction: rtl;*/
   pointer-events: all;
   overflow: hidden;
   -webkit-transform: translateX(-125%) translateY(0%);
   transition: -webkit-transform .33s ease-out, opacity 1s ease-out;
+  text-align: right;
 }
 .multiToast.visible{
   -webkit-transform: translateX(0%) translateY(0%);
@@ -40,8 +41,10 @@
 .multiToast.background{
   -webkit-transform: translateX(0%) translateY(100%);
 }
-.multiToast *{
-  direction: ltr;
+.multiToast > *{
+  /*direction: ltr;*/
+  width: 100%;
+  text-align: left;
 }
 
 
@@ -65,7 +68,8 @@
   border-color: #ccc;
 }*/
 .multiToast button{
-  float: right;
+  display: inline-block;
+  width: auto;
   margin: calc(var(--vh, 1vh) * 1);
   padding: calc(var(--vh, 1vh) * .75) calc(var(--vh, 1vh) * 1.25);
   box-shadow: 0 0 calc(var(--vh, 1vh) * 1) 0 #ccc;

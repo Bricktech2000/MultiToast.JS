@@ -5,7 +5,7 @@
     <title>MultiToast Example</title>
     <script src="MultiToast.js"></script>
     <script>
-      window.onload = function(){
+      window.onload = async function(){
         //showExampleToast('log');
         //showExampleToast('info');
         //showExampleToast('modalInfo');
@@ -29,20 +29,30 @@
               showExampleToast(types[i])
             };
           }(i), i * 1000);*/
-        multiToast.defaultTimeout = 3000;
-        setTimeout(function () {
-          multiToast.modal().info().toast('Test Toast -2');
-        }, 0);
-        setTimeout(function () {
-          multiToast.modal().warn().toast('Test Toast -1');
-        }, 1000);
-        setTimeout(function () {
-          multiToast.modal().sync().error().toast('Test Toast 1');
-          multiToast.modal().sync().success().toast('Test Toast 2');
-        }, 2000);
-        setTimeout(function () {
-          multiToast.modal().log().toast('Test Toast 3');
-        }, 10000);
+        function randomToasts(){
+          multiToast.defaultTimeout = 3000;
+          setTimeout(function () {
+            multiToast.modal().info().toast('Test Toast -2');
+          }, 0);
+          setTimeout(function () {
+            multiToast.modal().warn().toast('Test Toast -1');
+          }, 1000);
+          setTimeout(function () {
+            multiToast.modal().sync().error().toast('Test Toast 1');
+            multiToast.modal().sync().success().toast('Test Toast 2');
+          }, 2000);
+          setTimeout(function () {
+            multiToast.modal().log().toast('Test Toast 3');
+          }, 10000);
+        }
+        function randomLogs(){
+          multiToast.log().sync().toast('testToast');
+          multiToast.log().alert('testAlert');
+          multiToast.log().ask('testAsk');
+          multiToast.log().prompt('testPrompt', 'placeholder');
+          multiToast.log().auth('testAuth', 'placeholder');
+          multiToast.log().login('testLogin', 'placeholder1', 'placeholder2');
+        }
       }
     </script>
     <link rel="stylesheet" href="MultiToast.css"></link>

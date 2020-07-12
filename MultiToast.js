@@ -15,10 +15,13 @@ multiToast = {
   modal: -1,
   ok: 1,
   cancel: -1,
+  yes: 2,
+  no: -2,
   core: {
     toastStack: [],
     syncToastQueue: []
   },
+  defaultTimeout: 3000,
   Toast: class {
     constructor(){
       this.toastElement = document.createElement('div');
@@ -64,7 +67,7 @@ multiToast = {
         multiToast.toastContainer.style.pointerEvents = 'none';
       }
       this.core.params = {
-        timeout: () => {return multiToast.defaultTimeout},
+        timeout: undefined,
         modal: false,
         sync: true,
       };
@@ -377,10 +380,48 @@ multiToast.register('timeout', function(value = () => {return multiToast.default
   }
 })();
 
-multiToast.register('toast', function(message = ''){
+multiToast.register('toast', function(text = ''){
   this.setParam('timeout', () => {return multiToast.defaultTimeout}, true)
     .setParam('sync', false, true)
-    .addItem('text', message)
+    .addItem('text', text)
+    .show()
+});
+multiToast.register('alert', function(text = ''){
+  this
+    .addItem('text', text)
+    .addItem('submit', 'Ok', function(){ this.return(multiToast.ok) })
+    .show()
+});
+multiToast.register('ask', function(text = ''){
+  this
+    .addItem('text', text)
+    .addItem('submit', 'Yes', function(){ this.return(multiToast.yes) })
+    .addItem('button', 'No', function(){ this.return(multiToast.no) })
+    .show()
+});
+multiToast.register('prompt', function(text = '', placeholder = ''){
+  this
+    .addItem('text', text)
+    .addItem('input', placeholder)
+    .addItem('submit', 'Ok', function(){ this.return(this.inputs[0]) })
+    .addItem('button', 'Cancel', function(){ this.return(multiToast.cancel) })
+    .show()
+});
+multiToast.register('auth', function(text = '', placeholder = ''){
+  this
+    .addItem('text', text)
+    .addItem('pass', placeholder)
+    .addItem('submit', 'Ok', function(){ this.return(this.inputs[0]) })
+    .addItem('button', 'Cancel', function(){ this.return(multiToast.cancel) })
+    .show()
+});
+multiToast.register('login', function(text = '', placeholder1 = '', placeholder2 = ''){
+  this
+    .addItem('text', text)
+    .addItem('input', placeholder1)
+    .addItem('pass', placeholder2)
+    .addItem('submit', 'Ok', function(){ this.return([this.inputs[0], this.inputs[1]]) })
+    .addItem('button', 'Cancel', function(){ this.return(multiToast.cancel) })
     .show()
 });
 
