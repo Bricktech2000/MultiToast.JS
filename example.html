@@ -53,6 +53,16 @@
           multiToast.log().auth('testAuth', 'placeholder');
           multiToast.log().login('testLogin', 'placeholder1', 'placeholder2');
         }
+        async function simulateLogin(){
+          var correctPass = 'toast';
+          while(true){
+            var pass = await multiToast.modal().auth('Please enter the password: ');
+            if(pass.value === correctPass) break;
+            await multiToast.sync().modal().error().alert('Wrong password. The correct password is "' + correctPass + '"')
+          }
+          multiToast.success().toast('Successfully authenticated!');
+        }
+        simulateLogin();
       }
     </script>
     <link rel="stylesheet" href="MultiToast.css"></link>

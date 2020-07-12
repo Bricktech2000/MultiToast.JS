@@ -2,12 +2,14 @@ multiToast = {
   register: function(name, func){
     //https://stackoverflow.com/questions/32496825/proper-way-to-dynamically-add-functions-to-es6-classes
     this.Toast.prototype[name] = function(...params){
-      func.bind(this)(...params);
+      var ret = func.bind(this)(...params);
+      if(ret && ret.then) return ret; //promise
       return this;
     }
     this[name] = function(...params){
       var toast = new this.Toast();
-      func.bind(toast)(...params);
+      var ret = func.bind(toast)(...params);
+      if(ret && ret.then) return ret; //promise
       return toast;
     }
     return
@@ -381,26 +383,26 @@ multiToast.register('timeout', function(value = () => {return multiToast.default
 })();
 
 multiToast.register('toast', function(text = ''){
-  this.setParam('timeout', () => {return multiToast.defaultTimeout}, true)
+  return this.setParam('timeout', () => {return multiToast.defaultTimeout}, true)
     .setParam('sync', false, true)
     .addItem('text', text)
     .show()
 });
 multiToast.register('alert', function(text = ''){
-  this
+  return this
     .addItem('text', text)
     .addItem('submit', 'Ok', function(){ this.return(multiToast.ok) })
     .show()
 });
 multiToast.register('ask', function(text = ''){
-  this
+  return this
     .addItem('text', text)
     .addItem('submit', 'Yes', function(){ this.return(multiToast.yes) })
     .addItem('button', 'No', function(){ this.return(multiToast.no) })
     .show()
 });
 multiToast.register('prompt', function(text = '', placeholder = ''){
-  this
+  return this
     .addItem('text', text)
     .addItem('input', placeholder)
     .addItem('submit', 'Ok', function(){ this.return(this.inputs[0]) })
@@ -408,7 +410,7 @@ multiToast.register('prompt', function(text = '', placeholder = ''){
     .show()
 });
 multiToast.register('auth', function(text = '', placeholder = ''){
-  this
+  return this
     .addItem('text', text)
     .addItem('pass', placeholder)
     .addItem('submit', 'Ok', function(){ this.return(this.inputs[0]) })
@@ -416,7 +418,7 @@ multiToast.register('auth', function(text = '', placeholder = ''){
     .show()
 });
 multiToast.register('login', function(text = '', placeholder1 = '', placeholder2 = ''){
-  this
+  return this
     .addItem('text', text)
     .addItem('input', placeholder1)
     .addItem('pass', placeholder2)
