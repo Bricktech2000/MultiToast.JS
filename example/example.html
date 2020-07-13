@@ -75,7 +75,7 @@
       }
       async function demo2_1(){
         multiToast.register('link', function(text, links = []){
-          this.setParam('modal', true, true)
+          this.setParam('modal', false, true)
             .addItem('text', text)
           for(var link of links) this.addItem('button', link.text, function(href){return () => {window.open(href)}}(link.href))
           this.addItem('text', '\n')
@@ -187,7 +187,7 @@
       <div class="markup-block">
         <div class="markup-code-block">
           multiToast.register('link', function(text, links = []){<br>
-            &emsp;&emsp;this.setParam('modal', true, true)<br>
+            &emsp;&emsp;this.setParam('modal', false, true)<br>
               &emsp;&emsp;&emsp;&emsp;.addItem('text', text)<br>
             &emsp;&emsp;for(var link of links) this.addItem('button', link.text, function(href){return () => {window.open(href)}}(link.href))<br>
             &emsp;&emsp;this.addItem('text', '\n')<br>
