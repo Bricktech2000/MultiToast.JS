@@ -189,7 +189,7 @@
           multiToast.register('link', function(text, links = []){<br>
             &emsp;&emsp;this.setParam('modal', true, true)<br>
               &emsp;&emsp;&emsp;&emsp;.addItem('text', text)<br>
-            &emsp;&emsp;for(var link of links) this.addItem('button', link.text, () => {window.open(link.href)})<br>
+            &emsp;&emsp;for(var link of links) this.addItem('button', link.text, function(href){return () => {window.open(href)}}(link.href))<br>
             &emsp;&emsp;this.addItem('text', '\n')<br>
               &emsp;&emsp;&emsp;&emsp;.addItem('button', 'Close', () => {this.return(0)})<br>
               &emsp;&emsp;&emsp;&emsp;.show()<br>
