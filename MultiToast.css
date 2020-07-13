@@ -21,6 +21,7 @@
   padding: calc(var(--vh, 1vh) * 1);
   margin: calc(var(--vh, 1vh) * 2);
   max-width: calc(100vw - calc(var(--vh, 1vh) * 4));
+  color: #000;
   background: #fff;
   border: 0px solid #000;
   border-left-width: calc(var(--vh, 1vh) * .5);
