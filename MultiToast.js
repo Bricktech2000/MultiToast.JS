@@ -207,9 +207,9 @@ multiToast = {
           that.core.showModalBackground();
         //start the toast timeout if it is from the synchronous queue
         if(multiToast.core.syncToastQueue.length > 0) that.startTimeout();
-        //focus on the first input element of the toast
+        //focus on the first input element of the toast if it is a modal toast
         var input = that.toastElement.getElementsByTagName('input')[0] || that.toastElement.getElementsByTagName('button')[0];
-        if(input) input.focus();
+        if(input && this.core.params.modal) input.focus();
       }.bind(this);
       //function to hide the last element of the toast stack (usually to show a synchronous toast)
       function hideToastStack(){
