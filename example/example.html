@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>MultiToast Example</title>
+    <script src="../MultiToast.js"></script>
+    <link rel="stylesheet" href="../MultiToast.css"></link>
+    <script>
+      function randomToasts(){
+        multiToast.defaultTimeout = 3000;
+        setTimeout(function(){
+          multiToast.modal().info().toast('Test Toast -2');
+        }, 0);
+        setTimeout(function(){
+          multiToast.modal().warn().toast('Test Toast -1');
+        }, 1000);
+        setTimeout(function(){
+          multiToast.modal().sync().error().toast('Test Toast 1');
+          multiToast.modal().sync().success().toast('Test Toast 2');
+        }, 2000);
+        setTimeout(function(){
+          multiToast.modal().log().toast('Test Toast 3');
+        }, 10000);
+      }
+      function randomLogs(){
+        multiToast.log().sync().toast('testToast');
+        multiToast.log().alert('testAlert');
+        multiToast.log().ask('testAsk');
+        multiToast.log().prompt('testPrompt', 'placeholder');
+        multiToast.log().auth('testAuth', 'placeholder');
+        multiToast.log().login('testLogin', 'placeholder1', 'placeholder2');
+      }
+      async function simulateLogin(){
+        var correctPass = 'toast';
+        while(true){
+          var pass = await multiToast.modal().log().auth('Please enter the password: ');
+          if(pass.value === correctPass) break;
+          if(pass.value === multiToast.cancel || pass.value === '')
+            await multiToast.modal().error().toast('You need to enter a password!');
+          else
+            await multiToast.modal().error().alert('Wrong password. The correct password is "' + correctPass + '"')
+        }
+        multiToast.success().toast('Successfully authenticated!');
+      }
+      multiToast.iconPath = '../multiToastIcons/';
+      function run(e, demo, ...params){
+        e.preventDefault();
+        demo(...params);
+      }
+      async function demo1_1(){
+        multiToast.log().toast('This is MultiToast!');
+      }
+      async function demo1_2(){
+        await multiToast.log().toast('This is a log toast.');
+        await multiToast.info().toast('This is an info toast.');
+        await multiToast.warn().toast('This is a warn toast.');
+        await multiToast.error().toast('This is an error toast.');
+        await multiToast.success().toast('This is a success toast.');
+      }
+      async function demo1_3(){
+          await multiToast.toast('This is a toast. It has no buttons.');
+          await multiToast.alert('This is an alert toast, with an \'Ok\' button.');
+          await multiToast.ask('This is an ask toast, used to ask a question.');
+          await multiToast.prompt('This is a prompt toast, used to take user input.');
+          await multiToast.auth('This is an auth toast, used to type in a password.');
+          await multiToast.login('This is a login toast, with a username input and a password input.');
+      }
+      async function demo1_4(){
+          await multiToast.timeout(1000).toast('This is a very short toast.');
+          await multiToast.modal().alert('This is a modal toast. It disables the rest of the page.');
+          multiToast.sync().alert('This is a synchronous toast. It doesn\'t need the \'async\' keyword.');
+      }
+      async function demo1_5(){
+          await multiToast.timeout(15000).modal().error().prompt('This is a prompt toast with an error icon. It is also a modal toast, which means that the main page has lost focus. If no button is pressed, it will disappear in exactly 15 seconds.');
+      }
+      async function demo2_1(){
+        multiToast.register('link', function(text, links = []){
+          this.setParam('modal', true, true)
+            .addItem('text', text)
+          for(var link of links) this.addItem('button', link.text, function(href){return () => {window.open(href)}}(link.href))
+          this.addItem('text', '\n')
+            .addItem('button', 'Close', () => {this.return(0)})
+            .show()
+          return this;
+        });
+      }
+      async function demo2_2(){
+        await multiToast.info().link('Here are some links: <br><br>', [
+          {text: 'Github', href: 'https://github.com/'},
+          {text: 'My Github', href: 'https://github.com/Bricktech2000/'},
+          {text: 'MultiToast Github', href: 'https://github.com/Bricktech2000/multiToast'},
+        ]);
+      }
+      /*window.onload = async function(){
+        simulateLogin();
+      }*/
+    </script>
+    <link rel="stylesheet" href="markup.css">
+    <link rel="stylesheet" href="style.css">
+    <style media="screen">
+      .markup *:not(.markup-code-block){
+        white-space: normal;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="markup">
+      <br><br><div class="markup-h1">MultiToast.JS</div><br>
+      A highly customizable JavaScript Toast library
+      <br>
+      <br><br><div class="markup-h2">Your first Toast</div><br><br>
+      Here is what you need to write your first toast using MultiToast:
+      <div class="markup-block">
+        <ul><li>Download and include <a href="../multiToast.js" download class="markup-link markup-inline">multiToast.js</a></li></ul><br>
+        <ul><li>Download and include <a href="../multiToast.css" download class="markup-link markup-inline">multiToast.css</a></li></ul><br>
+        <ul><li>Download and unzip <a href="multiToastIcons.zip" download class="markup-link markup-inline">multiToast's icons</a></li></ul><br>
+      </div>
+      And then simply copy the following JavaScript:
+      <div class="markup-block">
+        <div class="markup-code-block">
+          multiToast.log().toast('This is MultiToast!');
+        </div>
+        <a onclick="run(event, demo1_1)" href="" class="markup-link markup-inline">Try it!</a>
+      </div>
+      <br><br><div class="markup-h2">The higher level of abstraction</div><br><br>
+      This library consists of two levels of abstraction. However, most users will only ever have to worry about the higher one. Here are some examples showcasing it.
+      <br><br>
+      To start off, here are the categories of toasts included with the library:
+      <div class="markup-block">
+        <div class="markup-code-block">
+          await multiToast.log().toast('This is a log toast.');<br>
+          await multiToast.info().toast('This is an info toast.');<br>
+          await multiToast.warn().toast('This is a warn toast.');<br>
+          await multiToast.error().toast('This is an error toast.');<br>
+          await multiToast.success().toast('This is a success toast.');<br>
+        </div>
+        <a onclick="run(event, demo1_2)" href="" class="markup-link markup-inline">Try it!</a>
+      </div>
+      There are also many types of toasts for different purposes. Here they are:
+      <div class="markup-block">
+        <div class="markup-code-block">
+          await multiToast.toast('This is a toast. It has no buttons.');<br>
+          await multiToast.alert('This is an alert toast, with an \'Ok\' button.');<br>
+          await multiToast.ask('This is an ask toast, used to ask a question.');<br>
+          await multiToast.prompt('This is a prompt toast, used to take user input.');<br>
+          await multiToast.auth('This is an auth toast, used to type in a password.');<br>
+          await multiToast.login('This is a login toast, with a username input and a password input.');<br>
+        </div>
+        <a onclick="run(event, demo1_3)" href="" class="markup-link markup-inline">Try it!</a>
+      </div>
+      There are also some more parameters you can tune if you wish. Here are some examples:
+      <div class="markup-block">
+        <div class="markup-code-block">
+            await multiToast.timeout(1000).toast('This is a very short toast.');<br>
+            await multiToast.modal().alert('This is a modal toast. It disables the rest of the page.');<br>
+            multiToast.sync().alert('This is a synchronous toast. It doesn\'t need the \'async\' keyword.');<br>
+        </div>
+        <a onclick="run(event, demo1_4)" href="" class="markup-link markup-inline">Try it!</a>
+      </div>
+      And of course, you can easily combine multiple categories of toasts, types of toasts and toast parameters, which allows you to create a very large variety of toasts:
+      <div class="markup-block">
+        <div class="markup-code-block">
+          await multiToast.timeout(15000).modal().error().prompt('This is a prompt toast with an error icon. It is also a modal toast, which means that the main page has lost focus. If no button is pressed, it will disappear in exactly 15 seconds.');
+        </div>
+        <a onclick="run(event, demo1_5)" href="" class="markup-link markup-inline">Try it!</a>
+      </div>
+      As a final demo, here is a real-world example of how MultiToast could be used:
+      <div class="markup-block">
+        <div class="markup-code-block">
+          var correctPass = '...';<br>
+          while(true){<br>
+            &emsp;&emsp;var pass = await multiToast.modal().log().auth('Please enter the password: ');<br>
+            &emsp;&emsp;if(pass.value === correctPass) break;<br>
+            &emsp;&emsp;if(pass.value === multiToast.cancel || pass.value === '')<br>
+              &emsp;&emsp;&emsp;&emsp;await multiToast.modal().error().toast('You need to enter a password!');<br>
+            &emsp;&emsp;else<br>
+              &emsp;&emsp;&emsp;&emsp;await multiToast.modal().error().alert('Wrong password. The correct password is "' + correctPass + '"')<br>
+          }<br>
+          multiToast.success().toast('Successfully authenticated!');<br>
+        </div>
+        <a onclick="run(event, simulateLogin)" href="" class="markup-link markup-inline">Try it!</a>
+      </div>
+      <br><br><div class="markup-h2">The lower level of abstraction</div><br><br>
+      This section will briefly showcase the lower-level aspect of this library, which is way more flexible. However, it is not recommended to interface with it directly, as a lot more code is necessary to program a simple toast. And fun fact, everything from the the higher-level part of this library (showcased above) is programmed using this lower-level API.
+      <br><br>
+      Here is an example toast using the lower-level API. Note that it registers the 'link' toast using the 'register' method from multiToast, which registers a new toast category, type or parameter. It explicitly tells multiToast what items to add to the toast, which adds a lot of flexibility. If you click on 'Try it!' below, nothing will happen. However, if you do not, the next demo will not work (it will throw a TypeError) because the 'link' toast will not be defined.
+      <div class="markup-block">
+        <div class="markup-code-block">
+          multiToast.register('link', function(text, links = []){<br>
+            &emsp;&emsp;this.setParam('modal', true, true)<br>
+              &emsp;&emsp;&emsp;&emsp;.addItem('text', text)<br>
+            &emsp;&emsp;for(var link of links) this.addItem('button', link.text, () => {window.open(link.href)})<br>
+            &emsp;&emsp;this.addItem('text', '\n')<br>
+              &emsp;&emsp;&emsp;&emsp;.addItem('button', 'Close', () => {this.return(0)})<br>
+              &emsp;&emsp;&emsp;&emsp;.show()<br>
+            &emsp;&emsp;return this;<br>
+          });<br>
+        </div>
+        <a onclick="run(event, demo2_1)" href="" class="markup-link markup-inline">Try it!</a>
+      </div>
+      Below is the use of the 'link' toast, which was defined above using the 'register' method. If you haven't clicked the 'Try it!' button above, it will not work because the 'link' toast is custom-defied, and not part of the library.
+      <div class="markup-block">
+        <div class="markup-code-block">
+          await multiToast.info().link('Here are some links: &lt;br&gt;&lt;br&gt;', [<br>
+            &emsp;&emsp;{text: 'Github', href: 'https://github.com/'},<br>
+            &emsp;&emsp;{text: 'My Github', href: 'https://github.com/Bricktech2000/'},<br>
+            &emsp;&emsp;{text: 'MultiToast Github', href: 'https://github.com/Bricktech2000/multiToast'},<br>
+          ]);<br>
+        </div>
+        <a onclick="run(event, demo2_2)" href="" class="markup-link markup-inline">Try it!</a>
+      </div>
+      And with this, I am done rambling. What are you wating for? Give it a try!
+      <br><br><br><br>
+    </div>
+  </body>
+</html>
