@@ -21,6 +21,7 @@ multiToast = {
   //some button constants
   ok: 1,
   cancel: -1,
+  close: 0,
   yes: 2,
   no: -2,
   //a toast stack and a toast queue for async and sync toasts respectively

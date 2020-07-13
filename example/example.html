@@ -79,7 +79,7 @@
             .addItem('text', text)
           for(var link of links) this.addItem('button', link.text, function(href){return () => {window.open(href)}}(link.href))
           this.addItem('text', '\n')
-            .addItem('button', 'Close', () => {this.return(0)})
+            .addItem('button', 'Close', () => {this.return(multiToast.close)})
             .show()
           return this;
         });
@@ -191,7 +191,7 @@
               &emsp;&emsp;&emsp;&emsp;.addItem('text', text)<br>
             &emsp;&emsp;for(var link of links) this.addItem('button', link.text, function(href){return () => {window.open(href)}}(link.href))<br>
             &emsp;&emsp;this.addItem('text', '\n')<br>
-              &emsp;&emsp;&emsp;&emsp;.addItem('button', 'Close', () => {this.return(0)})<br>
+              &emsp;&emsp;&emsp;&emsp;.addItem('button', 'Close', () => {this.return(multiToast.close)})<br>
               &emsp;&emsp;&emsp;&emsp;.show()<br>
             &emsp;&emsp;return this;<br>
           });<br>
