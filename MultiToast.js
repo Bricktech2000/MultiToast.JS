@@ -296,8 +296,8 @@ multiToast.register('timeout', function(value = () => {return multiToast.default
   //array of objects containing the name of the function and the color it should produce
   var types = [
     {name: 'log', color: '#ddd'},
-    {name: 'info', color: '#00d'},
-    {name: 'warn', color: '#dd0'},
+    {name: 'info', color: '#08e'},
+    {name: 'warn', color: '#fc0'},
     {name: 'error', color: '#d00'},
     {name: 'success', color: '#0d0'},
   ];
