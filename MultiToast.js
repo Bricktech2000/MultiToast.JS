@@ -378,11 +378,12 @@ multiToast.register('login', function(text = '', placeholder1 = '', placeholder2
   document.documentElement.style.setProperty('--vh', vh + 'px');
 })();
 
-//create the toast container when the window loads
-window.addEventListener('load', function(){
+//create the toast container and append it to the body when the window loads
+(function(){
   var container = document.createElement('div');
   container.classList.add('multiToastContainer');
-  document.body.appendChild(container);
-
   multiToast.toastContainer = container;
-})
+})();
+window.addEventListener('load', function(){
+  document.body.appendChild(multiToast.toastContainer);
+});
