@@ -165,7 +165,7 @@ multiToast = {
         case 'input':
         case 'pass':
           this.core.checkParamCount('addItem(' + type + ')', params, 0, 1);
-          this.inputs.push(undefined);
+          this.inputs.push('');
           var input = document.createElement('input');
           input.type = 'text'; if(type == 'pass') input.type = 'password';
           input.placeholder = params[0] !== undefined ? this.core.getValue(params[0]) : '';
