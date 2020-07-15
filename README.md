@@ -8,10 +8,10 @@ A highly customizable JavaScript toast library
 
 * Download and include `multiToast.js`
 * Download and include `multiToast.css`
-* Download `multiToastIcons` in the same parent folder
+* Download `multiToastIcons` in the same directory
 
 ## Minimal Example
-Note: this minimal example must be copied in an `HTML` file in the same parent folder as the other library dependencies.
+Note: this minimal example must be copied in an `HTML` file in the same directory as the other library dependencies.
 ```HTML
 <!DOCTYPE html>
 <html>
