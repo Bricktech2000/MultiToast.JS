@@ -18,8 +18,8 @@ Note: this minimal example must be copied in an `HTML` file in the same director
   <head>
     <meta charset="utf-8">
     <title>Minimal MultiToast Example</title>
-    <script src="MultiToast.js"></script>
-    <link rel="stylesheet" href="MultiToast.css">
+    <script src="multiToast.js"></script>
+    <link rel="stylesheet" href="multiToast.css">
     <script type="text/javascript">
       multiToast.log().toast('This is MultiToast!');
     </script>
