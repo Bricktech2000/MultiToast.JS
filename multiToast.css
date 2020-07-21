@@ -36,11 +36,19 @@
   transition: -webkit-transform .33s ease-out, opacity 1s ease-out;
   text-align: right;
 }
+.multiToast.multiToast-darkMode{
+  background: #000;
+  box-shadow: 0 0 calc(var(--vh, 1vh) * .25) 0 #888;
+  color: #fff;
+}
+.multiToast.multiToast-darkMode *{
+  box-shadow: none;
+}
 .multiToast.visible{
   -webkit-transform: translateX(0%) translateY(0%);
 }
 .multiToast.background{
-  -webkit-transform: translateX(0%) translateY(100%);
+  -webkit-transform: translateX(0%) translateY(105%);
 }
 .multiToast > *{
   /*direction: ltr;*/

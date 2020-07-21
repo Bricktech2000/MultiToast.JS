@@ -31,7 +31,10 @@ multiToast = {
   },
   //default timeout for toasts
   defaultTimeout: 3000,
+  //default path for icons
   iconPath: './multiToastIcons/',
+  //default mode for toasts
+  darkMode: 0,
   //the toast class, instantiated to get a new toast
   Toast: class {
     //constructor...
@@ -125,6 +128,7 @@ multiToast = {
         case 'modal':
         case 'sync':
         case 'timeout':
+        case 'dark':
           this.core.checkParamCount('setParam(' + type + ')', params, 1, 2);
           this.core.setParam(type, ...params);
           return this;
@@ -188,6 +192,10 @@ multiToast = {
     //a function to 'show' the toast
     //it adds the toast to the queue or stack and shows the relevent toast
     show(){
+      //set the dark mode according to the global or local darkMode flag
+      if((this.core.params.dark && this.core.paramSet.dark) ||
+        (multiToast.darkMode && !this.core.paramSet.dark))
+      this.toastElement.classList.add('multiToast-darkMode')
       //a function to show the next toast
       var showNextToast = function(){
         //get the next toast (the queue has priority over the stack)
@@ -316,6 +324,17 @@ multiToast.register('timeout', function(value = () => {return multiToast.default
     }(type));
   }
 })();
+
+//dark and light mode registers...
+
+multiToast.register('dark', function(global = false){
+  if(global) multiToast.darkMode = true;
+  else return this.setParam('dark', true);
+});
+multiToast.register('light', function(global = false){
+  if(global) multiToast.darkMode = false;
+  else return this.setParam('dark', false);
+});
 
 //some more register stuff...
 

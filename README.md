@@ -43,6 +43,8 @@ usage: [<return> = ]multiToast<category><settings><type>
     [.sync()]         //important, synchronous
     [.async()]        //non-important, asynchronous
     [.timeout(time)]  //disappears after 'time' ms
+    [.dark(global)]   //displays toasts in dark mode
+    [.light(global)]  //displays toasts in light mode
 
   <type>:
     .toast(<text>) |                    //no buttons
