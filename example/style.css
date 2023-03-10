@@ -1,5 +1,5 @@
 /*https://www.w3schools.com/css/css3_variables.asp*/
-:root{
+:root {
   --light-bg: #fff;
   --dark-bg: #000;
 
@@ -16,15 +16,13 @@
 
   --pixel-ratio: 3; /*the importance of the screen resolution in the scaling of items*/
 }
-*{
+* {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  /*https://stackoverflow.com/questions/11289166/chrome-on-android-resizes-font*/
-  max-height: 999999999px;
   word-wrap: break-word;
 }
-body{
+body {
   font-size: calc(2vh + 2px * var(--pixel-ratio));
   /*https://www.hostinger.com/tutorials/best-html-web-fonts*/
   font-family: Calibri, Verdana, sans-serif;
@@ -33,48 +31,48 @@ body{
   overflow-x: hidden;
   /*background: var(--light-bg);*/
   /*min-height: 2000px;*/
-  transition: color .25s ease-in-out, background-color .25s ease-in-out;
+  transition: color 0.25s ease-in-out, background-color 0.25s ease-in-out;
   color: var(--light-text);
   background: var(--light-bg);
 }
-body.dark-mode{
+body.dark-mode {
   color: var(--dark-text);
   background: var(--dark-bg);
 }
-.markup{
+.markup {
   padding: 5vh 15vw;
   overflow: hidden;
   /*transition: color .25s ease-in-out, background-color .25s ease-in-out;*/
   color: var(--light-text);
   background: var(--light-bg);
 }
-body.dark-mode .markup{
+body.dark-mode .markup {
   font-weight: lighter;
   color: var(--dark-text);
   background: var(--dark-bg);
 }
 /*Portrait*/
-@media (max-aspect-ratio: 3/2){
-  .markup{
+@media (max-aspect-ratio: 3/2) {
+  .markup {
     padding: 5vh 5vw;
   }
 }
 /*Phone*/
-@media (max-device-width: 1000px){
-  body{
+@media (max-device-width: 1000px) {
+  body {
     font-size: calc(2vmax + 2px * var(--pixel-ratio));
   }
 }
-::selection{
+::selection {
   color: var(--dark-title-text);
   background: var(--light-color);
 }
-body.dark-mode ::selection{
+body.dark-mode ::selection {
   background: var(--dark-color);
 }
-::-webkit-scrollbar{
+::-webkit-scrollbar {
   /*width: 1vh;*/
 }
-::-webkit-scrollbar-track{
-  background: rgba(0, 0, 0, 0);/*var(--dark-bg);*/
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0); /*var(--dark-bg);*/
 }
