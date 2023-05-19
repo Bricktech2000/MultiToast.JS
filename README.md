@@ -1,17 +1,21 @@
 # MultiToast.JS
-A highly customizable JavaScript toast library
+
+_A highly customizable JavaScript toast library_
 
 ## Requirements
-* Any browser with HTML5 support
+
+- Any browser with HTML5 support
 
 ## Setup
 
-* Download and include `multiToast.js`
-* Download and include `multiToast.css`
-* Download `multiToastIcons` in the same directory
+- Download and include `multiToast.js`
+- Download and include `multiToast.css`
+- Download `multiToastIcons` in the same directory
 
 ## Minimal Example
+
 Note: this minimal example must be copied in an `HTML` file in the same directory as the other library dependencies.
+
 ```HTML
 <!DOCTYPE html>
 <html>
@@ -64,4 +68,5 @@ usage: [<return> = ]multiToast<category><settings><type>
       multiToast.no |      //the user clicked 'No'
       <input string(s)>    //a string or array of strings containing text input values
 ```
+
 Yeah this is nonsense just check out `example/example.html` for real-life examples that are actually understandable.
